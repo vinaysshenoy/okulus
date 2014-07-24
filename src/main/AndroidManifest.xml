@@ -1,6 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.vinaysshenoy.okulus">
+<manifest
+    package="com.vinaysshenoy.okulus">
 
-    <application android:allowBackup="false"/>
+    <application
+        />
 
 </manifest>
