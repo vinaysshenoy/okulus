@@ -19,6 +19,7 @@ package com.vinaysshenoy.okulus;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -47,17 +48,22 @@ class OkulusDrawable extends Drawable {
     private       float        mShadowWidth;
     private       int          mShadowColor;
     private       float        mShadowRadius;
+    private       int          mBitmapWidth;
+    private       int          mBitmapHeight;
+    private       int          mTouchSelectorColor;
 
 
-    public OkulusDrawable(Bitmap bitmap, float cornerRadius, boolean fullCircle, float borderWidth, int borderColor, float shadowWidth, int shadowColor, float shadowRadius) {
+    public OkulusDrawable(Bitmap bitmap, float cornerRadius, boolean fullCircle, float borderWidth, int borderColor, float shadowWidth, int shadowColor, float shadowRadius, int touchSelectorColor) {
+
         mCornerRadius = cornerRadius;
-        mBitmapShader = getShaderForBitmap(bitmap);
+        updateBitmap(bitmap);
         mBorderWidth = borderWidth;
         mBorderColor = borderColor;
         mFullCircle = fullCircle;
         mShadowColor = shadowColor;
         mShadowRadius = shadowRadius;
         mShadowWidth = shadowWidth;
+        mTouchSelectorColor = touchSelectorColor;
 
         mBorderRect = new RectF();
         mImageRect = new RectF();
@@ -68,15 +74,39 @@ class OkulusDrawable extends Drawable {
     }
 
     /**
+     * Updates the touch selector color
+     *
+     * @param touchSelectorColor The color to use as the touch selector
+     */
+    public void setTouchSelectorColor(final int touchSelectorColor) {
+        mTouchSelectorColor = touchSelectorColor;
+    }
+
+    /**
      * Creates a bitmap shader with a bitmap
      */
     private BitmapShader getShaderForBitmap(Bitmap bitmap) {
         return new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
     }
 
+    /**
+     * Updates the drawable with a Bitmap. {@link OkulusImageView#invalidate()} must be called by
+     * the caller after this method returns
+     *
+     * @param bitmap The Bitmap to set, or <code>null</code> to clear the bitmap being drawn
+     */
     public void updateBitmap(Bitmap bitmap) {
 
-        mBitmapShader = getShaderForBitmap(bitmap);
+        if (bitmap == null) {
+            mBitmapShader = null;
+            mBitmapWidth = 0;
+            mBitmapHeight = 0;
+        } else {
+            mBitmapWidth = bitmap.getWidth();
+            mBitmapHeight = bitmap.getHeight();
+            mBitmapShader = getShaderForBitmap(bitmap);
+        }
+
     }
 
     @Override
@@ -144,8 +174,35 @@ class OkulusDrawable extends Drawable {
 
         mPaint.setShader(null);
         drawBordersAndShadow(canvas);
-        drawImage(canvas);
+        if (mBitmapShader != null) {
+            drawImage(canvas);
+        } else {
+            //TODO: Draw some custom background color here
+        }
+        if (mTouchSelectorColor != Color.TRANSPARENT) {
+            drawTouchSelector(canvas);
+        }
 
+    }
+
+    /**
+     * Draws the touch selector on the canvas based on the View attributes
+     *
+     * @param canvas The canvas to draw the touch selector on
+     */
+    private void drawTouchSelector(final Canvas canvas) {
+
+        final int prevColor = mPaint.getColor();
+        mPaint.setShader(null);
+        mPaint.setColor(mTouchSelectorColor);
+        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+
+        if (mBorderWidth > 0) {
+            canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mPaint);
+        } else {
+            canvas.drawRoundRect(mImageRect, mCornerRadius, mCornerRadius, mPaint);
+        }
+        mPaint.setColor(prevColor);
     }
 
     /**
