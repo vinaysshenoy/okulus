@@ -120,10 +120,7 @@ class OkulusDrawable extends Drawable {
     private void initRectsWithBorders() {
 
         mBorderRect.set(mRect);
-        mBorderRect.left += mBorderWidth;
-        mBorderRect.top += mBorderWidth;
-        mBorderRect.right -= mBorderWidth;
-        mBorderRect.bottom -= mBorderWidth;
+        mBorderRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
 
         if (mShadowWidth > 0) {
 
@@ -138,11 +135,8 @@ class OkulusDrawable extends Drawable {
             mBorderRect.bottom -= mShadowWidth;
         }
 
-        mImageRect.set(
-                mBorderRect.left + mBorderWidth,
-                mBorderRect.top + mBorderWidth,
-                mBorderRect.right - mBorderWidth,
-                mBorderRect.bottom - mBorderWidth);
+        mImageRect.set(mBorderRect);
+        mImageRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
     }
 
     @Override
