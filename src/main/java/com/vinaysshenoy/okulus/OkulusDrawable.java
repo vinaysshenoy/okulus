@@ -26,8 +26,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.view.View;
 
 /** Custom drawable class that takes care of the actual drawing */
 class OkulusDrawable extends Drawable {
@@ -42,16 +40,16 @@ class OkulusDrawable extends Drawable {
 
     private       BitmapShader mBitmapShader;
     private final Paint        mPaint;
-    private       int          mBorderWidth;
+    private       float        mBorderWidth;
     private       int          mBorderColor;
     private       boolean      mFullCircle;
     private       float        mCornerRadius;
-    private       int          mShadowWidth;
+    private       float        mShadowWidth;
     private       int          mShadowColor;
     private       float        mShadowRadius;
 
 
-    public OkulusDrawable(Bitmap bitmap, float cornerRadius, boolean fullCircle, int borderWidth, int borderColor, int shadowWidth, int shadowColor, float shadowRadius) {
+    public OkulusDrawable(Bitmap bitmap, float cornerRadius, boolean fullCircle, float borderWidth, int borderColor, float shadowWidth, int shadowColor, float shadowRadius) {
         mCornerRadius = cornerRadius;
         mBitmapShader = getShaderForBitmap(bitmap);
         mBorderWidth = borderWidth;

@@ -36,21 +36,21 @@ import android.widget.ImageView;
  */
 public class OkulusImageView extends ImageView {
 
-    private static final int     DEFAULT_CORNER_RADIUS = 5;               //dips
-    private static final int     DEFAULT_BORDER_WIDTH  = 0;                //dips
+    private static final float   DEFAULT_CORNER_RADIUS = 5f;               //dips
+    private static final float   DEFAULT_BORDER_WIDTH  = 0f;                //dips
     private static final int     DEFAULT_BORDER_COLOR  = Color.BLACK;
-    private static final int     DEFAULT_SHADOW_WIDTH  = 0; //dips
+    private static final float   DEFAULT_SHADOW_WIDTH  = 0f; //dips
     private static final int     DEFAULT_SHADOW_COLOR  = 0xB3444444; //70% dark gray
     private static final boolean DEFAULT_FULL_CIRCLE   = false;
     private static final float   DEFAULT_SHADOW_RADIUS = 0.5f;
 
-    private int          mCornerRadius;
-    private int          mBorderWidth;
-    private int          mBorderColor;
-    private int          mShadowWidth;
-    private float        mShadowRadius;
-    private int          mShadowColor;
-    private boolean      mFullCircle;
+    private float   mCornerRadius;
+    private float   mBorderWidth;
+    private int     mBorderColor;
+    private float   mShadowWidth;
+    private float   mShadowRadius;
+    private int     mShadowColor;
+    private boolean mFullCircle;
 
     /**
      * @param context
@@ -87,10 +87,10 @@ public class OkulusImageView extends ImageView {
     private void init(Context context, AttributeSet attrs) {
 
         mCornerRadius = dpToPx(DEFAULT_CORNER_RADIUS);
-        int borderWidthInDips = DEFAULT_BORDER_WIDTH;
+        float borderWidthInDips = DEFAULT_BORDER_WIDTH;
         mBorderColor = DEFAULT_BORDER_COLOR;
         mFullCircle = DEFAULT_FULL_CIRCLE;
-        int shadowWidthInDips = DEFAULT_SHADOW_WIDTH;
+        float shadowWidthInDips = DEFAULT_SHADOW_WIDTH;
         mShadowColor = DEFAULT_SHADOW_COLOR;
         mShadowRadius = DEFAULT_SHADOW_RADIUS;
 
@@ -99,7 +99,7 @@ public class OkulusImageView extends ImageView {
 
             TypedArray styledAttrs = context
                     .obtainStyledAttributes(attrs, R.styleable.OkulusImageView);
-            mCornerRadius = (int) styledAttrs
+            mCornerRadius = styledAttrs
                     .getDimension(R.styleable.OkulusImageView_cornerRadius, mCornerRadius);
             mBorderColor = styledAttrs
                     .getColor(R.styleable.OkulusImageView_borderColor, mBorderColor);
@@ -110,10 +110,10 @@ public class OkulusImageView extends ImageView {
             mShadowRadius = styledAttrs
                     .getFloat(R.styleable.OkulusImageView_shadowRadius, mShadowRadius);
 
-            int dimension = (int) styledAttrs
+            float dimension = styledAttrs
                     .getDimension(R.styleable.OkulusImageView_borderWidth, borderWidthInDips);
             borderWidthInDips = pxToDp(dimension);
-            dimension = (int) styledAttrs
+            dimension = styledAttrs
                     .getDimension(R.styleable.OkulusImageView_shadowWidth, shadowWidthInDips);
             shadowWidthInDips = pxToDp(dimension);
 
@@ -139,15 +139,15 @@ public class OkulusImageView extends ImageView {
     /**
      * Converts a raw pixel value to a dp value, based on the device density
      */
-    private static int pxToDp(int px) {
-        return (int) (px / Resources.getSystem().getDisplayMetrics().density);
+    private static float pxToDp(float px) {
+        return px / Resources.getSystem().getDisplayMetrics().density;
     }
 
     /**
      * Converts a raw dp value to a pixel value, based on the device density
      */
-    public static int dpToPx(int dp) {
-        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+    public static float dpToPx(float dp) {
+        return dp * Resources.getSystem().getDisplayMetrics().density;
     }
 
 
@@ -163,18 +163,18 @@ public class OkulusImageView extends ImageView {
      * @param borderWidthInDips The set border width in dips
      * @param shadowWidthInDips The set shadow width in dips
      */
-    private void clampBorderAndShadowWidths(int borderWidthInDips, int shadowWidthInDips) {
+    private void clampBorderAndShadowWidths(float borderWidthInDips, float shadowWidthInDips) {
 
-        if (borderWidthInDips > 5) {
-            borderWidthInDips = 5;
-        } else if (borderWidthInDips < 0) {
-            borderWidthInDips = 0;
+        if (borderWidthInDips > 5f) {
+            borderWidthInDips = 5f;
+        } else if (borderWidthInDips < 0f) {
+            borderWidthInDips = 0f;
         }
 
-        if (shadowWidthInDips > 3) {
-            shadowWidthInDips = 3;
-        } else if (shadowWidthInDips < 0) {
-            shadowWidthInDips = 0;
+        if (shadowWidthInDips > 3f) {
+            shadowWidthInDips = 3f;
+        } else if (shadowWidthInDips < 0f) {
+            shadowWidthInDips = 0f;
         }
     }
 
