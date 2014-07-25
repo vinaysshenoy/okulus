@@ -1,7 +1,77 @@
-okulus
-======
+okulus(BETA)
+============
+Custom Imageview for Android that allows for setting shapes/borders/shadows efficiently. This is currently in Beta as some minor issues are getting ironed out.
 
-Custom Imageview for Android that allows for setting shapes/borders/shadows efficiently
+Demo app is coming on the Play Store soon!
+
+The basic concept for drawing Bitmaps with a shape without creating a new Bitmap is based on [Romain Guy](https://plus.google.com/+RomainGuy)'s article on drawing [Bitmaps with Rounded Corners](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/).
+
+### Usage
+1. Clone the repository and add the library to your project.
+
+2. Add the custom namespace attribute to your layout 
+```xml
+xmlns:okulus="http://schemas.android.com/apk/res/com.vinaysshenoy.okulus
+```
+
+3. Add `OkulusImageView` to your layout and set the attributes you need
+```xml
+<com.vinaysshenoy.okulus.OkulusImageView
+            android:id="@+id/image_1"
+            android:layout_width="128dp"
+            android:layout_height="96dp"
+            okulus:fullCircle="true"
+            okulus:borderWidth="2dp"
+            okulus:borderColor="#FF0000"
+            okulus:shadowRadius="0.05"
+            okulus:shadowWidth="1.5dp"
+            okulus:shadowColor="#00FF00"
+            />
+```
+
+4. Call `setImageBitmap()` and you're done!
+```java
+OkulusImageView imageView = findViewById(R.id.image_1);
+imageView.setImageBitmap(bitmap);
+```
+
+### Custom Attributes
+1. `cornerRadius(dimension)` - Sets the corner radius used for adding the rounded corners. Set it to 50% of the width(for a square image) to make it a full circle. Default `0dp`.
+2. `fullCircle(boolean)` - If this is set to `true`, the entire Bitmap will be drawn as a circle. The width and height will be set to whichever is smaller among them, and `cornerRadius` attribute will be ignored. Default `false`.
+3. `borderWidth(dimension)` - Sets the width of the border to be drawn. Will be capped at `5dp`.
+4. `borderColor(color)` - Sets the color of the border to draw. Default color is `#FF000000`.
+5. `shadowWidth(dimension)` - Sets the width of the shadow to draw. Will be capped at `3dp`.
+6. `shadowColor(color)` - Sets the color of the shadow to draw. Default is `#B3444444`.
+7. `shadowRadius(float)` - Defines how sharp the shadow is. Set it to a small value(~0.5) for sharp shadows, and larger values for soft shadows.
+
+### Pros
+1. No extra memory used for creating the reshaped Bitmap
+2. Zero overdraw
+3. Any combination of shapes - Rounded Rects, Rects, Squares, Circles are possible with borders + shadow
+ 
+### Cons
+1. Supports only fixed dimensions. `wrap_content` cannot be used.
+2. Does not respect the `scaleType` attribute of `ImageView`. Scaled Bitmaps need to be provided.
+3. No touch selection feedback.
+4. Shadows cannot be used without borders
+5. Supports only the `setImageBitmap` method.
+6. Attributes can only be set through XML
+7. Shadows are currently drawn to the right and bottom of the View.
+
+## Roadmap
+### Version 1.0
+1. Touch selection feedback
+2. Adding `get()` and `set()` attributes for `OculusImageView` for setting attributes through code
+3. Fix some minor bugs
+ 
+### Future(in descending order of priority)
+1. Adding support for any configuration of shadows
+2. Adding support for `wrap_content`
+3. Respecting ImageView's `scaleType` attribute
+4. Adding support for `setImageUri` and `setImageResource`
+5. Adding support for color filters to easily configure effects like Sepia, Grayscale etc.
+6. Adding suppport for Image transitions when changing the image content
+7. ?
 
 ### License
 Copyright 2014 Vinay S Shenoy
