@@ -71,7 +71,8 @@ imageView.setImageBitmap(bitmap);
 4. Adding support for `setImageUri` and `setImageResource`
 5. Adding support for color filters to easily configure effects like Sepia, Grayscale etc.
 6. Adding suppport for Image transitions when changing the image content
-7. ?
+7. Adding support for custom shapes
+8. ?
 
 ### License
 Copyright 2014 Vinay S Shenoy
