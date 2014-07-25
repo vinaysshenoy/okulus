@@ -42,37 +42,36 @@ imageView.setImageBitmap(bitmap);
 4. `borderColor(color)` - Sets the color of the border to draw. Default color is `#FF000000`.
 5. `shadowWidth(dimension)` - Sets the width of the shadow to draw. Will be capped at `3dp`.
 6. `shadowColor(color)` - Sets the color of the shadow to draw. Default is `#B3444444`.
-7. `shadowRadius(float)` - Defines how sharp the shadow is. Set it to a small value(~0.5) for sharp shadows, and larger values for soft shadows.
+7. `shadowRadius(float)` - Defines how sharp the shadow is. Set it to a small value(~0.5) for sharp shadows, and larger values for soft shadows. Default `0.5`
+8. `touchSelectorColor(color)` - Defines the colour of the color overlayed on the view when it is touched. This is ignored if `touchSelectorEnabled` is `false`. Default `#66444444`
+9. `touchSelectorEnabled(boolean)` - Defines whether the touch selectors should be drawn or not. Default is `false`
 
 ### Pros
 1. No extra memory used for creating the reshaped Bitmap
 2. Zero overdraw
 3. Any combination of shapes - Rounded Rects, Rects, Squares, Circles are possible with borders + shadow
  
-### Cons
+### Limitations
 1. Supports only fixed dimensions. `wrap_content` cannot be used.
 2. Does not respect the `scaleType` attribute of `ImageView`. Scaled Bitmaps need to be provided.
-3. No touch selection feedback.
-4. Shadows cannot be used without borders
-5. Supports only the `setImageBitmap` method.
-6. Attributes can only be set through XML
-7. Shadows are currently drawn to the right and bottom of the View.
+3. Shadows cannot be used without borders
+4. Supports only the `setImageBitmap` method.
+5. Attributes can only be set through XML
+6. Shadows are currently drawn to the right and bottom of the View and cannot be changed.
 
 ## Roadmap
 ### Version 1.0
-1. Touch selection feedback
-2. Adding `get()` and `set()` attributes for `OculusImageView` for setting attributes through code
-3. Fix some minor bugs
+1. Adding `get()` and `set()` attributes for `OkulusImageView` for setting attributes through code
+2. Respecting ImageView's `scaleType` attribute
  
 ### Future(in descending order of priority)
-1. Adding support for any configuration of shadows
-2. Adding support for `wrap_content`
-3. Respecting ImageView's `scaleType` attribute
-4. Adding support for `setImageUri` and `setImageResource`
-5. Adding support for color filters to easily configure effects like Sepia, Grayscale etc.
-6. Adding suppport for Image transitions when changing the image content
-7. Adding support for custom shapes
-8. ?
+1. Adding support for `wrap_content`
+2. Adding support for any configuration of shadows
+3. Adding support for `setImageUri`, `setImageResource` and `setImageDrawable`
+4. Adding support for color filters to easily configure effects like Sepia, Grayscale etc.
+5. Adding support for Image transitions when changing the image content
+6. Adding support for custom shapes
+7. ?
 
 ### License
 Copyright 2014 Vinay S Shenoy
