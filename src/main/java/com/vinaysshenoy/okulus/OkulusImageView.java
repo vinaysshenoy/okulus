@@ -247,15 +247,19 @@ public class OkulusImageView extends ImageView {
     @Override
     public void setImageBitmap(Bitmap bm) {
 
-        final Drawable content = getDrawable();
-
-        if (content instanceof OkulusDrawable) {
-            ((OkulusDrawable) content).updateBitmap(bm);
-            invalidate();
+        if(bm == null) {
+            super.setImageBitmap(null);
         } else {
+            final Drawable content = getDrawable();
 
-            setImageDrawable(null);
-            setOkulusDrawable(bm);
+            if (content instanceof OkulusDrawable) {
+                ((OkulusDrawable) content).updateBitmap(bm);
+                invalidate();
+            } else {
+
+                setImageDrawable(null);
+                setOkulusDrawable(bm);
+            }
         }
     }
 
