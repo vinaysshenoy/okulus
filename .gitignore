@@ -23,3 +23,6 @@ local.properties
 proguard/
 
 .DS_Store
+
+#IntelliJ
+.idea/
