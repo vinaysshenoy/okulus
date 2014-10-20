@@ -337,7 +337,7 @@ public class OkulusImageView extends ImageView {
     /**
      * Updates the view's okulus drawable with the touch selector color
      *
-     * @param touchSelectorColor The color to update with, or {@link Color#TRANSPARENT} to disable
+     * @param touchSelectorColor The color to update with, or {@link android.graphics.Color#TRANSPARENT} to disable
      *                           the touch selctor
      */
     private void updateTouchSelectorColor(final int touchSelectorColor) {
