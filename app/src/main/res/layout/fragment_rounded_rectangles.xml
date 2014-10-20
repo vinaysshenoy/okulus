@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:okulus="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/scroll"
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/container_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <com.vinaysshenoy.okulus.OkulusImageView
+            android:id="@+id/image_1"
+            android:layout_width="128dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="12dp"
+            okulus:cornerRadius="5dp"
+            />
+
+        <com.vinaysshenoy.okulus.OkulusImageView
+            android:id="@+id/image_2"
+            android:layout_width="128dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="12dp"
+            okulus:cornerRadius="5dp"
+            okulus:borderWidth="3dp"
+            okulus:borderColor="#000000"
+            />
+
+        <com.vinaysshenoy.okulus.OkulusImageView
+            android:id="@+id/image_3"
+            android:layout_width="128dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="12dp"
+            okulus:cornerRadius="25dp"
+            />
+
+        <com.vinaysshenoy.okulus.OkulusImageView
+            android:id="@+id/image_4"
+            android:layout_width="128dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="12dp"
+            okulus:fullCircle="true"
+            />
+
+        <com.vinaysshenoy.okulus.OkulusImageView
+            android:id="@+id/image_5"
+            android:layout_width="96dp"
+            android:layout_height="128dp"
+            android:layout_marginTop="12dp"
+            okulus:borderWidth="2dp"
+            okulus:borderColor="#FFFFFF"
+            okulus:shadowRadius="0.05"
+            okulus:shadowWidth="1.5dp"
+            okulus:cornerRadius="5dp"
+            />
+
+        <com.vinaysshenoy.okulus.OkulusImageView
+            android:id="@+id/image_6"
+            android:layout_width="128dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="12dp"
+            okulus:fullCircle="true"
+            okulus:borderWidth="2dp"
+            okulus:borderColor="#FF0000"
+            okulus:shadowRadius="0.05"
+            okulus:shadowWidth="1.5dp"
+            okulus:shadowColor="#00FF00"
+            />
+    </LinearLayout>
+
+</ScrollView>

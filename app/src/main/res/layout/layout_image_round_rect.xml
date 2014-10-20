@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:okulus="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="@dimen/image_size"
+              android:layout_height="@dimen/image_size">
+
+    <com.vinaysshenoy.okulus.OkulusImageView
+        android:id="@+id/image_okulus"
+        android:layout_width="@dimen/image_size"
+        android:layout_height="@dimen/image_size"
+        okulus:cornerRadius="5dp"
+        />
+
+
+</LinearLayout>
