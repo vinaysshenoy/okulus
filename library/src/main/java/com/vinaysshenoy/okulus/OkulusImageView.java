@@ -280,8 +280,7 @@ public class OkulusImageView extends ImageView {
                                  mShadowWidth,
                                  mShadowColor,
                                  mShadowRadius,
-                                 Color.TRANSPARENT,
-                                 getScaleType())
+                                 Color.TRANSPARENT)
         );
 
     }
