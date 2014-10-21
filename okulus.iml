@@ -6,10 +6,14 @@
         <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
       </configuration>
     </facet>
+    <facet type="android" name="Android">
+      <configuration />
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
