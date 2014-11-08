@@ -20,7 +20,7 @@
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
-            okulus:cornerRadius="5dp"
+            okulus:okulus_cornerRadius="5dp"
             />
 
         <com.vinaysshenoy.okulus.OkulusImageView
@@ -28,9 +28,9 @@
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
-            okulus:cornerRadius="5dp"
-            okulus:borderWidth="3dp"
-            okulus:borderColor="#000000"
+            okulus:okulus_cornerRadius="5dp"
+            okulus:okulus_borderWidth="3dp"
+            okulus:okulus_borderColor="#000000"
             />
 
         <com.vinaysshenoy.okulus.OkulusImageView
@@ -38,7 +38,7 @@
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
-            okulus:cornerRadius="25dp"
+            okulus:okulus_cornerRadius="25dp"
             />
 
         <com.vinaysshenoy.okulus.OkulusImageView
@@ -46,7 +46,7 @@
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
-            okulus:fullCircle="true"
+            okulus:okulus_fullCircle="true"
             />
 
         <com.vinaysshenoy.okulus.OkulusImageView
@@ -54,11 +54,11 @@
             android:layout_width="96dp"
             android:layout_height="128dp"
             android:layout_marginTop="12dp"
-            okulus:borderWidth="2dp"
-            okulus:borderColor="#FFFFFF"
-            okulus:shadowRadius="0.05"
-            okulus:shadowWidth="1.5dp"
-            okulus:cornerRadius="5dp"
+            okulus:okulus_borderWidth="2dp"
+            okulus:okulus_borderColor="#FFFFFF"
+            okulus:okulus_shadowRadius="0.05"
+            okulus:okulus_shadowWidth="1.5dp"
+            okulus:okulus_cornerRadius="5dp"
             />
 
         <com.vinaysshenoy.okulus.OkulusImageView
@@ -66,12 +66,12 @@
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
-            okulus:fullCircle="true"
-            okulus:borderWidth="2dp"
-            okulus:borderColor="#FF0000"
-            okulus:shadowRadius="0.05"
-            okulus:shadowWidth="1.5dp"
-            okulus:shadowColor="#00FF00"
+            okulus:okulus_fullCircle="true"
+            okulus:okulus_borderWidth="2dp"
+            okulus:okulus_borderColor="#FF0000"
+            okulus:okulus_shadowRadius="0.05"
+            okulus:okulus_shadowWidth="1.5dp"
+            okulus:okulus_shadowColor="#00FF00"
             />
     </LinearLayout>
 
