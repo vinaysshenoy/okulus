@@ -2,14 +2,14 @@
 
 <resources>
     <declare-styleable name="OkulusImageView">
-        <attr name="cornerRadius" format="dimension"/>
-        <attr name="borderWidth" format="dimension"/>
-        <attr name="borderColor" format="color"/>
-        <attr name="fullCircle" format="boolean"/>
-        <attr name="shadowWidth" format="dimension"/>
-        <attr name="shadowColor" format="color"/>
-        <attr name="shadowRadius" format="float"/>
-        <attr name="touchSelectorColor" format="color"/>
-        <attr name="touchSelectorEnabled" format="boolean"/>
+        <attr name="okulus_cornerRadius" format="dimension"/>
+        <attr name="okulus_borderWidth" format="dimension"/>
+        <attr name="okulus_borderColor" format="color"/>
+        <attr name="okulus_fullCircle" format="boolean"/>
+        <attr name="okulus_shadowWidth" format="dimension"/>
+        <attr name="okulus_shadowColor" format="color"/>
+        <attr name="okulus_shadowRadius" format="float"/>
+        <attr name="okulus_touchSelectorColor" format="color"/>
+        <attr name="okulus_touchSelectorEnabled" format="boolean"/>
     </declare-styleable>
 </resources>

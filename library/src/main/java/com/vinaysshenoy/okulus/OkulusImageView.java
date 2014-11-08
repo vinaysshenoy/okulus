@@ -27,7 +27,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -121,25 +120,25 @@ public class OkulusImageView extends ImageView {
             TypedArray styledAttrs = context
                     .obtainStyledAttributes(attrs, R.styleable.OkulusImageView);
             mCornerRadius = styledAttrs
-                    .getDimension(R.styleable.OkulusImageView_cornerRadius, mCornerRadius);
+                    .getDimension(R.styleable.OkulusImageView_okulus_cornerRadius, mCornerRadius);
             mBorderColor = styledAttrs
-                    .getColor(R.styleable.OkulusImageView_borderColor, mBorderColor);
+                    .getColor(R.styleable.OkulusImageView_okulus_borderColor, mBorderColor);
             mFullCircle = styledAttrs
-                    .getBoolean(R.styleable.OkulusImageView_fullCircle, mFullCircle);
+                    .getBoolean(R.styleable.OkulusImageView_okulus_fullCircle, mFullCircle);
             mShadowColor = styledAttrs
-                    .getColor(R.styleable.OkulusImageView_shadowColor, mShadowColor);
+                    .getColor(R.styleable.OkulusImageView_okulus_shadowColor, mShadowColor);
             mShadowRadius = styledAttrs
-                    .getFloat(R.styleable.OkulusImageView_shadowRadius, mShadowRadius);
+                    .getFloat(R.styleable.OkulusImageView_okulus_shadowRadius, mShadowRadius);
             mTouchSelectorColor = styledAttrs
-                    .getColor(R.styleable.OkulusImageView_touchSelectorColor, mTouchSelectorColor);
+                    .getColor(R.styleable.OkulusImageView_okulus_touchSelectorColor, mTouchSelectorColor);
             mTouchSelectorEnabled = styledAttrs
-                    .getBoolean(R.styleable.OkulusImageView_touchSelectorEnabled, mTouchSelectorEnabled);
+                    .getBoolean(R.styleable.OkulusImageView_okulus_touchSelectorEnabled, mTouchSelectorEnabled);
 
             float dimension = styledAttrs
-                    .getDimension(R.styleable.OkulusImageView_borderWidth, borderWidthInDips);
+                    .getDimension(R.styleable.OkulusImageView_okulus_borderWidth, borderWidthInDips);
             borderWidthInDips = pxToDp(dimension);
             dimension = styledAttrs
-                    .getDimension(R.styleable.OkulusImageView_shadowWidth, shadowWidthInDips);
+                    .getDimension(R.styleable.OkulusImageView_okulus_shadowWidth, shadowWidthInDips);
             shadowWidthInDips = pxToDp(dimension);
 
             styledAttrs.recycle();
