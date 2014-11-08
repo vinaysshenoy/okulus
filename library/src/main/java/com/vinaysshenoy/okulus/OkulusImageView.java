@@ -27,7 +27,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -280,7 +279,8 @@ public class OkulusImageView extends ImageView {
                                  mShadowWidth,
                                  mShadowColor,
                                  mShadowRadius,
-                                 Color.TRANSPARENT)
+                                 Color.TRANSPARENT,
+                                 getScaleType())
         );
 
     }

@@ -21,12 +21,14 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 
 /** Custom drawable class that takes care of the actual drawing */
 class OkulusDrawable extends Drawable {
@@ -52,11 +54,13 @@ class OkulusDrawable extends Drawable {
     private       int          mBitmapHeight;
     private       int          mTouchSelectorColor;
 
+    private Matrix              mShaderMatrix;
+    private ImageView.ScaleType mScaleType;
 
-    public OkulusDrawable(Bitmap bitmap, float cornerRadius, boolean fullCircle, float borderWidth, int borderColor, float shadowWidth, int shadowColor, float shadowRadius, int touchSelectorColor) {
+
+    public OkulusDrawable(Bitmap bitmap, float cornerRadius, boolean fullCircle, float borderWidth, int borderColor, float shadowWidth, int shadowColor, float shadowRadius, int touchSelectorColor, ImageView.ScaleType scaleType) {
 
         mCornerRadius = cornerRadius;
-        updateBitmap(bitmap);
         mBorderWidth = borderWidth;
         mBorderColor = borderColor;
         mFullCircle = fullCircle;
@@ -64,12 +68,16 @@ class OkulusDrawable extends Drawable {
         mShadowRadius = shadowRadius;
         mShadowWidth = shadowWidth;
         mTouchSelectorColor = touchSelectorColor;
+        mScaleType = scaleType;
 
         mBorderRect = new RectF();
         mImageRect = new RectF();
+        mShaderMatrix = new Matrix();
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+
+        updateBitmap(bitmap);
 
     }
 
@@ -105,6 +113,7 @@ class OkulusDrawable extends Drawable {
             mBitmapWidth = bitmap.getWidth();
             mBitmapHeight = bitmap.getHeight();
             mBitmapShader = getShaderForBitmap(bitmap);
+            mBitmapShader.setLocalMatrix(mShaderMatrix);
         }
 
     }
@@ -113,19 +122,153 @@ class OkulusDrawable extends Drawable {
     protected void onBoundsChange(Rect bounds) {
 
         super.onBoundsChange(bounds);
-        mRect.set(0, 0, bounds.width(), bounds
-                .height());
+        mRect.set(bounds);
 
         if (mFullCircle) {
             mCornerRadius = Math.abs(mRect.left - mRect.right) / 2;
         }
 
-        if (mBorderWidth > 0) {
+        updateRects();
+        /*if (mBorderWidth > 0) {
             initRectsWithBorders();
         } else {
             initRectsWithoutBorders();
+        }*/
+
+
+    }
+
+    /**
+     * Updates the bitmap shader matrix to take the scale type into account
+     */
+    private void updateRects() {
+
+        mImageRect.set(mRect);
+        float scale;
+        float dx;
+        float dy;
+
+        switch (mScaleType) {
+            case CENTER: {
+                mBorderRect.set(mRect);
+                mBorderRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
+                updateBorderRectForShadows();
+                mShaderMatrix.set(null);
+                mShaderMatrix.setTranslate((int) ((mBorderRect.width() - mBitmapWidth) * 0.5f + 0.5f),
+                                           (int) ((mBorderRect.height() - mBitmapHeight) * 0.5f + 0.5f));
+                break;
+            }
+
+            case CENTER_CROP: {
+                mBorderRect.set(mRect);
+                mBorderRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
+                updateBorderRectForShadows();
+
+                mShaderMatrix.set(null);
+
+                dx = 0;
+                dy = 0;
+
+                if (mBitmapWidth * mBorderRect.height() > mBorderRect.width() * mBitmapHeight) {
+                    scale = mBorderRect.height() / (float) mBitmapHeight;
+                    dx = (mBorderRect.width() - mBitmapWidth * scale) * 0.5f;
+                } else {
+                    scale = mBorderRect.width() / (float) mBitmapWidth;
+                    dy = (mBorderRect.height() - mBitmapHeight * scale) * 0.5f;
+                }
+
+                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth,
+                                            (int) (dy + 0.5f) + mBorderWidth);
+                break;
+            }
+
+            case CENTER_INSIDE: {
+                mShaderMatrix.set(null);
+
+                if (mBitmapWidth <= mRect.width() && mBitmapHeight <= mRect.height()) {
+                    scale = 1.0f;
+                } else {
+                    scale = Math.min(mRect.width() / (float) mBitmapWidth,
+                                     mRect.height() / (float) mBitmapHeight);
+                }
+
+                dx = (int) ((mRect.width() - mBitmapWidth * scale) * 0.5f + 0.5f);
+                dy = (int) ((mRect.height() - mBitmapHeight * scale) * 0.5f + 0.5f);
+
+                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.postTranslate(dx, dy);
+
+                mBorderRect.set(mImageRect);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
+                updateBorderRectForShadows();
+                mShaderMatrix.setRectToRect(mImageRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+            }
+
+            case FIT_END: {
+                mBorderRect.set(mImageRect);
+                mShaderMatrix.setRectToRect(mImageRect, mRect, Matrix.ScaleToFit.END);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
+                updateBorderRectForShadows();
+                mShaderMatrix.setRectToRect(mImageRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+            }
+
+            case FIT_START: {
+                mBorderRect.set(mImageRect);
+                mShaderMatrix.setRectToRect(mImageRect, mRect, Matrix.ScaleToFit.START);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
+                updateBorderRectForShadows();
+                mShaderMatrix.setRectToRect(mImageRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+            }
+
+            case FIT_XY: {
+                mBorderRect.set(mRect);
+                mBorderRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
+                updateBorderRectForShadows();
+                mShaderMatrix.set(null);
+                mShaderMatrix.setRectToRect(mImageRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+            }
+
+            default:
+            case FIT_CENTER: {
+                mBorderRect.set(mImageRect);
+                mShaderMatrix.setRectToRect(mImageRect, mRect, Matrix.ScaleToFit.CENTER);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
+                mShaderMatrix.setRectToRect(mImageRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+            }
         }
 
+        mImageRect.set(mBorderRect);
+        if (mBitmapShader != null) {
+            mBitmapShader.setLocalMatrix(mShaderMatrix);
+        }
+
+    }
+
+    /**
+     * Updates the border rect if shadows are to be drawn
+     */
+    private void updateBorderRectForShadows() {
+
+        if (mShadowWidth > 0) {
+            /* Shadows will be drawn to the right & bottom,
+             * so adjust the border rect on the right & bottom.
+             *
+             * Since the image rect is calculated from the
+             * border rect, the dimens will be accounted for.
+             */
+            mBorderRect.right -= mShadowWidth;
+            mBorderRect.bottom -= mShadowWidth;
+        }
     }
 
     /**
@@ -213,7 +356,7 @@ class OkulusDrawable extends Drawable {
     private void drawImage(final Canvas canvas) {
 
         mPaint.setShader(mBitmapShader);
-        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mPaint.setStyle(Paint.Style.FILL);
         canvas.drawRoundRect(mImageRect, mCornerRadius, mCornerRadius, mPaint);
     }
 
