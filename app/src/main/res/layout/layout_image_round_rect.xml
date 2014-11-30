@@ -10,7 +10,7 @@
         android:id="@+id/image_okulus"
         android:layout_width="@dimen/image_size"
         android:layout_height="@dimen/image_size"
-        okulus:cornerRadius="5dp"
+        okulus:okulus_cornerRadius="5dp"
         />
 
 
