@@ -58,9 +58,20 @@ public class RoundedRectanglesFragment extends Fragment {
         mImageView6 = (OkulusImageView) content.findViewById(R.id.image_6);
 
 
-        loadBitmaps();
+        //loadBitmaps();
 
         return content;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mImageView1.setImageResource(R.drawable.img_res);
+        mImageView2.setImageResource(R.drawable.img_res);
+        mImageView3.setImageResource(R.drawable.img_res);
+        mImageView4.setImageResource(R.drawable.img_res);
+        mImageView5.setImageResource(R.drawable.img_res);
+        mImageView6.setImageResource(R.drawable.img_res);
     }
 
     private void loadBitmaps() {
