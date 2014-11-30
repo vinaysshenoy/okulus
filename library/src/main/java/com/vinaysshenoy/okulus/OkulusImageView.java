@@ -163,7 +163,7 @@ public class OkulusImageView extends ImageView {
                 setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
         }
-        setOkulusDrawable(null);
+        setImageDrawable(null);
 
     }
 
@@ -252,7 +252,7 @@ public class OkulusImageView extends ImageView {
     @Override
     public void setImageURI(Uri uri) {
         super.setImageURI(uri);
-        setOkulusDrawable(getBitmapFromDrawable(getDrawable()));
+        setImageBitmap(getBitmapFromDrawable(getDrawable()));
     }
 
     @Override
@@ -266,16 +266,16 @@ public class OkulusImageView extends ImageView {
             super.setImageDrawable(null);
         } else if (drawable instanceof OkulusDrawable) {
             super.setImageDrawable(drawable);
+        } else {
+            setImageBitmap(getBitmapFromDrawable(drawable));
         }
-        super.setImageDrawable(getOkulusDrawable
-                (getBitmapFromDrawable(drawable)));
     }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
 
         if (bm == null) {
-            super.setImageBitmap(null);
+            setImageDrawable(null);
         } else {
             final Drawable content = getDrawable();
 
@@ -283,8 +283,7 @@ public class OkulusImageView extends ImageView {
                 ((OkulusDrawable) content).updateBitmap(bm);
                 invalidate();
             } else {
-                setImageDrawable(null);
-                setOkulusDrawable(bm);
+                setImageDrawable(getOkulusDrawable(bm));
             }
         }
     }
@@ -313,6 +312,9 @@ public class OkulusImageView extends ImageView {
     }
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
         }
