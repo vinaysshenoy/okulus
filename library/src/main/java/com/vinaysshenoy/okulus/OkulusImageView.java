@@ -21,9 +21,14 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -40,27 +45,29 @@ public class OkulusImageView extends ImageView {
 
     private static final String TAG = "OkulusImageView";
 
-    private static final float   DEFAULT_CORNER_RADIUS          = 5f;               //dips
-    private static final float   DEFAULT_BORDER_WIDTH           = 0f;                //dips
-    private static final int     DEFAULT_BORDER_COLOR           = Color.BLACK;
-    private static final float   DEFAULT_SHADOW_WIDTH           = 0f; //dips
-    private static final int     DEFAULT_SHADOW_COLOR           = 0xB3444444; //70% dark gray
-    private static final int     DEFAULT_TOUCH_SELECTOR_COLOR   = 0x66444444; //40% dark gray
-    private static final boolean DEFAULT_FULL_CIRCLE            = false;
-    private static final float   DEFAULT_SHADOW_RADIUS          = 0.5f;
+    private static final float DEFAULT_CORNER_RADIUS = 5f;               //dips
+    private static final float DEFAULT_BORDER_WIDTH = 0f;                //dips
+    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private static final float DEFAULT_SHADOW_WIDTH = 0f; //dips
+    private static final int DEFAULT_SHADOW_COLOR = 0xB3444444; //70% dark gray
+    private static final int DEFAULT_TOUCH_SELECTOR_COLOR = 0x66444444; //40% dark gray
+    private static final boolean DEFAULT_FULL_CIRCLE = false;
+    private static final float DEFAULT_SHADOW_RADIUS = 0.5f;
     private static final boolean DEFAULT_TOUCH_SELECTOR_ENABLED = false;
 
-    private float   mCornerRadius;
-    private float   mBorderWidth;
-    private int     mBorderColor;
-    private float   mShadowWidth;
-    private float   mShadowRadius;
-    private int     mShadowColor;
-    private int     mTouchSelectorColor;
+    private float mCornerRadius;
+    private float mBorderWidth;
+    private int mBorderColor;
+    private float mShadowWidth;
+    private float mShadowRadius;
+    private int mShadowColor;
+    private int mTouchSelectorColor;
     private boolean mTouchSelectorEnabled;
     private boolean mFullCircle;
 
-    /** Used to store the view coordinates for holding touch events */
+    /**
+     * Used to store the view coordinates for holding touch events
+     */
     private Rect mViewRect;
 
     /**
@@ -157,7 +164,7 @@ public class OkulusImageView extends ImageView {
                 setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
         }
-        setOkulusDrawable(null);
+        setImageDrawable(null);
 
     }
 
@@ -244,10 +251,32 @@ public class OkulusImageView extends ImageView {
     }
 
     @Override
+    public void setImageURI(Uri uri) {
+        super.setImageURI(uri);
+        setImageBitmap(getBitmapFromDrawable(getDrawable()));
+    }
+
+    @Override
+    public void setImageResource(int resId) {
+        setImageBitmap(BitmapFactory.decodeResource(getResources(), resId));
+    }
+
+    @Override
+    public void setImageDrawable(Drawable drawable) {
+        if (drawable == null) {
+            super.setImageDrawable(null);
+        } else if (drawable instanceof OkulusDrawable) {
+            super.setImageDrawable(drawable);
+        } else {
+            setImageBitmap(getBitmapFromDrawable(drawable));
+        }
+    }
+
+    @Override
     public void setImageBitmap(Bitmap bm) {
 
-        if(bm == null) {
-            super.setImageBitmap(null);
+        if (bm == null) {
+            setImageDrawable(null);
         } else {
             final Drawable content = getDrawable();
 
@@ -255,9 +284,7 @@ public class OkulusImageView extends ImageView {
                 ((OkulusDrawable) content).updateBitmap(bm);
                 invalidate();
             } else {
-
-                setImageDrawable(null);
-                setOkulusDrawable(bm);
+                setImageDrawable(getOkulusDrawable(bm));
             }
         }
     }
@@ -269,19 +296,46 @@ public class OkulusImageView extends ImageView {
      *               of the settings
      */
     private void setOkulusDrawable(final Bitmap bitmap) {
+        setImageDrawable(getOkulusDrawable(bitmap));
+    }
 
-        setImageDrawable(new OkulusDrawable(
-                                 bitmap,
-                                 mCornerRadius,
-                                 mFullCircle,
-                                 mBorderWidth,
-                                 mBorderColor,
-                                 mShadowWidth,
-                                 mShadowColor,
-                                 mShadowRadius,
-                                 Color.TRANSPARENT)
-        );
+    private OkulusDrawable getOkulusDrawable(final Bitmap bitmap) {
+        return new OkulusDrawable(
+                bitmap,
+                mCornerRadius,
+                mFullCircle,
+                mBorderWidth,
+                mBorderColor,
+                mShadowWidth,
+                mShadowColor,
+                mShadowRadius,
+                Color.TRANSPARENT);
+    }
 
+    private Bitmap getBitmapFromDrawable(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        Bitmap bitmap;
+
+        if (drawable instanceof ColorDrawable) {
+            bitmap = Bitmap.createBitmap(2, 2, Bitmap.Config.ARGB_8888);
+        } else {
+            int width = drawable.getIntrinsicWidth();
+            width = width > 0 ? width : 1;
+            int height = drawable.getIntrinsicHeight();
+            height = height > 0 ? height : 1;
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     @Override
@@ -308,7 +362,7 @@ public class OkulusImageView extends ImageView {
 
                     if (!mViewRect.contains(eventX + mViewRect.left, eventY + mViewRect.top)) {
                         //User moved outside
-                        if(mAlreadyInside) {
+                        if (mAlreadyInside) {
                             mAlreadyInside = false;
                             updateTouchSelectorColor(Color.TRANSPARENT);
                         }

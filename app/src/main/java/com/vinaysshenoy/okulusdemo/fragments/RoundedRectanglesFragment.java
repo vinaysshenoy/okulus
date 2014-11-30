@@ -1,6 +1,10 @@
 package com.vinaysshenoy.okulusdemo.fragments;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -58,16 +62,25 @@ public class RoundedRectanglesFragment extends Fragment {
         mImageView6 = (OkulusImageView) content.findViewById(R.id.image_6);
 
 
-        loadBitmaps();
+        //loadBitmaps();
 
         return content;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Drawable drawable = new ColorDrawable(Color.RED);
+        mImageView1.setImageDrawable(drawable);
+        Uri uri = Uri.parse("android.resource://com.vinaysshenoy.okulusdemo/" + R.drawable.img_for_uri);
+        mImageView2.setImageURI(uri);
+
+        mImageView3.setImageResource(R.drawable.img_res);
+        loadBitmaps();
+    }
+
     private void loadBitmaps() {
 
-        mPool.submit(new LoadBitmapRunnable(mImageView1, R.raw.img_1, 256, 128));
-        mPool.submit(new LoadBitmapRunnable(mImageView2, R.raw.img_2, 256, 128));
-        mPool.submit(new LoadBitmapRunnable(mImageView3, R.raw.img_3, 256, 128));
         mPool.submit(new LoadBitmapRunnable(mImageView4, R.raw.img_4, 256, 128));
         mPool.submit(new LoadBitmapRunnable(mImageView5, R.raw.img_5, 128, 256));
         mPool.submit(new LoadBitmapRunnable(mImageView6, R.raw.img_6, 256, 128));
