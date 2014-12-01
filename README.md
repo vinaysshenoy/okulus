@@ -20,12 +20,12 @@ xmlns:okulus="http://schemas.android.com/apk/res/com.vinaysshenoy.okulus
             android:id="@+id/image_1"
             android:layout_width="128dp"
             android:layout_height="96dp"
-            okulus:fullCircle="true"
-            okulus:borderWidth="2dp"
-            okulus:borderColor="#FF0000"
-            okulus:shadowRadius="0.05"
-            okulus:shadowWidth="1.5dp"
-            okulus:shadowColor="#00FF00"
+            okulus:okulus_fullCircle="true"
+            okulus:okulus_borderWidth="2dp"
+            okulus:okulus_borderColor="#FF0000"
+            okulus:okulus_shadowRadius="0.05"
+            okulus:okulus_shadowWidth="1.5dp"
+            okulus:okulus_shadowColor="#00FF00"
             />
 ```
 
@@ -36,15 +36,15 @@ imageView.setImageBitmap(bitmap);
 ```
 
 ### Custom Attributes
-1. `cornerRadius(dimension)` - Sets the corner radius used for adding the rounded corners. Set it to 50% of the width(for a square image) to make it a full circle. Default `0dp`.
-2. `fullCircle(boolean)` - If this is set to `true`, the entire Bitmap will be drawn as a circle. The width and height will be set to whichever is smaller among them, and `cornerRadius` attribute will be ignored. Default `false`.
-3. `borderWidth(dimension)` - Sets the width of the border to be drawn. Will be capped at `5dp`.
-4. `borderColor(color)` - Sets the color of the border to draw. Default color is `#FF000000`.
-5. `shadowWidth(dimension)` - Sets the width of the shadow to draw. Will be capped at `3dp`.
-6. `shadowColor(color)` - Sets the color of the shadow to draw. Default is `#B3444444`.
-7. `shadowRadius(float)` - Defines how sharp the shadow is. Set it to a small value(~0.5) for sharp shadows, and larger values for soft shadows. Default `0.5`
-8. `touchSelectorColor(color)` - Defines the colour of the color overlayed on the view when it is touched. This is ignored if `touchSelectorEnabled` is `false`. Default `#66444444`
-9. `touchSelectorEnabled(boolean)` - Defines whether the touch selectors should be drawn or not. Default is `false`
+1. `okulus_cornerRadius(dimension)` - Sets the corner radius used for adding the rounded corners. Set it to 50% of the width(for a square image) to make it a full circle. Default `0dp`.
+2. `okulus_fullCircle(boolean)` - If this is set to `true`, the entire Bitmap will be drawn as a circle. The width and height will be set to whichever is smaller among them, and `cornerRadius` attribute will be ignored. Default `false`.
+3. `okulus_borderWidth(dimension)` - Sets the width of the border to be drawn. Will be capped at `5dp`.
+4. `okulus_borderColor(color)` - Sets the color of the border to draw. Default color is `#FF000000`.
+5. `okulus_shadowWidth(dimension)` - Sets the width of the shadow to draw. Will be capped at `3dp`.
+6. `okulus_shadowColor(color)` - Sets the color of the shadow to draw. Default is `#B3444444`.
+7. `okulus_shadowRadius(float)` - Defines how sharp the shadow is. Set it to a small value(~0.5) for sharp shadows, and larger values for soft shadows. Default `0.5`
+8. `okulus_touchSelectorColor(color)` - Defines the colour of the color overlayed on the view when it is touched. This is ignored if `touchSelectorEnabled` is `false`. Default `#66444444`
+9. `okulus_touchSelectorEnabled(boolean)` - Defines whether the touch selectors should be drawn or not. Default is `false`
 
 ### Pros
 1. No extra memory used for creating the reshaped Bitmap
@@ -55,9 +55,8 @@ imageView.setImageBitmap(bitmap);
 1. Supports only fixed dimensions. `wrap_content` cannot be used.
 2. Does not respect the `scaleType` attribute of `ImageView`. Scaled Bitmaps need to be provided.
 3. Shadows cannot be used without borders
-4. Supports only the `setImageBitmap` method.
-5. Attributes can only be set through XML
-6. Shadows are currently drawn to the right and bottom of the View and cannot be changed.
+4. Attributes can only be set through XML
+5. Shadows are currently drawn to the right and bottom of the View and cannot be changed.
 
 ## Roadmap
 ### Version 1.0
@@ -67,11 +66,10 @@ imageView.setImageBitmap(bitmap);
 ### Future(in descending order of priority)
 1. Adding support for `wrap_content`
 2. Adding support for any configuration of shadows
-3. Adding support for `setImageUri`, `setImageResource` and `setImageDrawable`
-4. Adding support for color filters to easily configure effects like Sepia, Grayscale etc.
-5. Adding support for Image transitions when changing the image content
-6. Adding support for custom shapes
-7. ?
+3. Adding support for color filters to easily configure effects like Sepia, Grayscale etc.
+4. Adding support for Image transitions when changing the image content
+5. Adding support for custom shapes
+6. ?
 
 ### License
 Copyright 2014 Vinay S Shenoy
