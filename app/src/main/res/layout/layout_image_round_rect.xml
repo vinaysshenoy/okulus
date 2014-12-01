@@ -6,7 +6,7 @@
               android:layout_width="@dimen/image_size"
               android:layout_height="@dimen/image_size">
 
-    <com.okulus.OkulusImageView
+    <com.vinaysshenoy.okulus.OkulusImageView
         android:id="@+id/image_okulus"
         android:layout_width="@dimen/image_size"
         android:layout_height="@dimen/image_size"

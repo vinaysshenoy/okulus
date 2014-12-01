@@ -24,7 +24,5 @@ proguard/
 
 .DS_Store
 
-maventask.gradle
-
 #IntelliJ
 .idea/

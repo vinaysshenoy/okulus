@@ -15,8 +15,6 @@ android {
 
     defaultConfig {
         minSdkVersion 8
-        versionCode 1
-        versionName "0.9b"
     }
 }
 

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.okulus.OkulusImageView;
+import com.vinaysshenoy.okulus.OkulusImageView;
 import com.vinaysshenoy.okulusdemo.utils.RawBitmapManager;
 
 /**
