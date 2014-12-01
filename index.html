@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Okulus by vinaysshenoy</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Okulus</h1>
+          <h2>Custom Imageview for Android that allows for setting shapes/borders/shadows efficiently</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/vinaysshenoy/okulus/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/vinaysshenoy/okulus/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/vinaysshenoy/okulus" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="okulusbeta" class="anchor" href="#okulusbeta" aria-hidden="true"><span class="octicon octicon-link"></span></a>okulus(BETA)</h1>
+
+<p>Custom Imageview for Android that allows for setting shapes/borders/shadows efficiently. This is currently in Beta as some minor issues are getting ironed out.</p>
+
+<p>Demo app is coming on the Play Store soon!</p>
+
+<p>The basic concept for drawing Bitmaps with a shape without creating a new Bitmap is based on <a href="https://plus.google.com/+RomainGuy">Romain Guy</a>'s article on drawing <a href="http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/">Bitmaps with Rounded Corners</a>.</p>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<ol>
+<li><p>Clone the repository and add the library to your project.</p></li>
+<li><p>Add the custom namespace attribute to your layout </p></li>
+</ol>
+
+<div class="highlight highlight-xml"><pre>xmlns:okulus="http://schemas.android.com/apk/res/com.vinaysshenoy.okulus</pre></div>
+
+<ol>
+<li>Add <code>OkulusImageView</code> to your layout and set the attributes you need</li>
+</ol>
+
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">com</span>.vinaysshenoy.okulus.OkulusImageView
+            <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">id</span>=<span class="pl-s1"><span class="pl-pds">"</span>@+id/image_1<span class="pl-pds">"</span></span>
+            <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">layout_width</span>=<span class="pl-s1"><span class="pl-pds">"</span>128dp<span class="pl-pds">"</span></span>
+            <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">layout_height</span>=<span class="pl-s1"><span class="pl-pds">"</span>96dp<span class="pl-pds">"</span></span>
+            <span class="pl-e">okulus</span><span class="pl-e">:</span><span class="pl-e">okulus_fullCircle</span>=<span class="pl-s1"><span class="pl-pds">"</span>true<span class="pl-pds">"</span></span>
+            <span class="pl-e">okulus</span><span class="pl-e">:</span><span class="pl-e">okulus_borderWidth</span>=<span class="pl-s1"><span class="pl-pds">"</span>2dp<span class="pl-pds">"</span></span>
+            <span class="pl-e">okulus</span><span class="pl-e">:</span><span class="pl-e">okulus_borderColor</span>=<span class="pl-s1"><span class="pl-pds">"</span>#FF0000<span class="pl-pds">"</span></span>
+            <span class="pl-e">okulus</span><span class="pl-e">:</span><span class="pl-e">okulus_shadowRadius</span>=<span class="pl-s1"><span class="pl-pds">"</span>0.05<span class="pl-pds">"</span></span>
+            <span class="pl-e">okulus</span><span class="pl-e">:</span><span class="pl-e">okulus_shadowWidth</span>=<span class="pl-s1"><span class="pl-pds">"</span>1.5dp<span class="pl-pds">"</span></span>
+            <span class="pl-e">okulus</span><span class="pl-e">:</span><span class="pl-e">okulus_shadowColor</span>=<span class="pl-s1"><span class="pl-pds">"</span>#00FF00<span class="pl-pds">"</span></span>
+            /&gt;</pre></div>
+
+<ol>
+<li>Call <code>setImageBitmap()</code> and you're done!</li>
+</ol>
+
+<div class="highlight highlight-java"><pre><span class="pl-stj">OkulusImageView</span> imageView <span class="pl-k">=</span> findViewById(<span class="pl-stj">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>image_1);
+imageView<span class="pl-k">.</span>setImageBitmap(bitmap);</pre></div>
+
+<h3>
+<a id="custom-attributes" class="anchor" href="#custom-attributes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Attributes</h3>
+
+<ol>
+<li>
+<code>okulus_cornerRadius(dimension)</code> - Sets the corner radius used for adding the rounded corners. Set it to 50% of the width(for a square image) to make it a full circle. Default <code>0dp</code>.</li>
+<li>
+<code>okulus_fullCircle(boolean)</code> - If this is set to <code>true</code>, the entire Bitmap will be drawn as a circle. The width and height will be set to whichever is smaller among them, and <code>cornerRadius</code> attribute will be ignored. Default <code>false</code>.</li>
+<li>
+<code>okulus_borderWidth(dimension)</code> - Sets the width of the border to be drawn. Will be capped at <code>5dp</code>.</li>
+<li>
+<code>okulus_borderColor(color)</code> - Sets the color of the border to draw. Default color is <code>#FF000000</code>.</li>
+<li>
+<code>okulus_shadowWidth(dimension)</code> - Sets the width of the shadow to draw. Will be capped at <code>3dp</code>.</li>
+<li>
+<code>okulus_shadowColor(color)</code> - Sets the color of the shadow to draw. Default is <code>#B3444444</code>.</li>
+<li>
+<code>okulus_shadowRadius(float)</code> - Defines how sharp the shadow is. Set it to a small value(~0.5) for sharp shadows, and larger values for soft shadows. Default <code>0.5</code>
+</li>
+<li>
+<code>okulus_touchSelectorColor(color)</code> - Defines the colour of the color overlayed on the view when it is touched. This is ignored if <code>touchSelectorEnabled</code> is <code>false</code>. Default <code>#66444444</code>
+</li>
+<li>
+<code>okulus_touchSelectorEnabled(boolean)</code> - Defines whether the touch selectors should be drawn or not. Default is <code>false</code>
+</li>
+</ol>
+
+<h3>
+<a id="pros" class="anchor" href="#pros" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pros</h3>
+
+<ol>
+<li>No extra memory used for creating the reshaped Bitmap</li>
+<li>Zero overdraw</li>
+<li>Any combination of shapes - Rounded Rects, Rects, Squares, Circles are possible with borders + shadow</li>
+</ol>
+
+<h3>
+<a id="limitations" class="anchor" href="#limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Limitations</h3>
+
+<ol>
+<li>Supports only fixed dimensions. <code>wrap_content</code> cannot be used.</li>
+<li>Does not respect the <code>scaleType</code> attribute of <code>ImageView</code>. Scaled Bitmaps need to be provided.</li>
+<li>Shadows cannot be used without borders</li>
+<li>Attributes can only be set through XML</li>
+<li>Shadows are currently drawn to the right and bottom of the View and cannot be changed.</li>
+</ol>
+
+<h2>
+<a id="roadmap" class="anchor" href="#roadmap" aria-hidden="true"><span class="octicon octicon-link"></span></a>Roadmap</h2>
+
+<h3>
+<a id="version-10" class="anchor" href="#version-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version 1.0</h3>
+
+<ol>
+<li>Adding <code>get()</code> and <code>set()</code> attributes for <code>OkulusImageView</code> for setting attributes through code</li>
+<li>Respecting ImageView's <code>scaleType</code> attribute</li>
+</ol>
+
+<h3>
+<a id="futurein-descending-order-of-priority" class="anchor" href="#futurein-descending-order-of-priority" aria-hidden="true"><span class="octicon octicon-link"></span></a>Future(in descending order of priority)</h3>
+
+<ol>
+<li>Adding support for <code>wrap_content</code>
+</li>
+<li>Adding support for any configuration of shadows</li>
+<li>Adding support for color filters to easily configure effects like Sepia, Grayscale etc.</li>
+<li>Adding support for Image transitions when changing the image content</li>
+<li>Adding support for custom shapes</li>
+<li>?</li>
+</ol>
+
+<h3>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h3>
+
+<p>Copyright 2014 Vinay S Shenoy</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<pre><code>http://www.apache.org/licenses/LICENSE-2.0
+</code></pre>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+        </section>
+
+        <footer>
+          Okulus is maintained by <a href="https://github.com/vinaysshenoy">vinaysshenoy</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
