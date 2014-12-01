@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.vinaysshenoy.okulus;
+package com.okulus;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

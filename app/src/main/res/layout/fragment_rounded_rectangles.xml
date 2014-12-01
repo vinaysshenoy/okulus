@@ -15,14 +15,14 @@
         android:padding="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
 
-        <com.vinaysshenoy.okulus.OkulusImageView
+        <com.okulus.OkulusImageView
             android:id="@+id/image_1"
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
             okulus:okulus_cornerRadius="5dp" />
 
-        <com.vinaysshenoy.okulus.OkulusImageView
+        <com.okulus.OkulusImageView
             android:id="@+id/image_2"
             android:layout_width="128dp"
             android:layout_height="96dp"
@@ -31,21 +31,21 @@
             okulus:okulus_borderWidth="3dp"
             okulus:okulus_borderColor="#000000" />
 
-        <com.vinaysshenoy.okulus.OkulusImageView
+        <com.okulus.OkulusImageView
             android:id="@+id/image_3"
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
             okulus:okulus_cornerRadius="25dp" />
 
-        <com.vinaysshenoy.okulus.OkulusImageView
+        <com.okulus.OkulusImageView
             android:id="@+id/image_4"
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
             okulus:okulus_fullCircle="true" />
 
-        <com.vinaysshenoy.okulus.OkulusImageView
+        <com.okulus.OkulusImageView
             android:id="@+id/image_5"
             android:layout_width="96dp"
             android:layout_height="128dp"
@@ -56,7 +56,7 @@
             okulus:okulus_shadowWidth="1.5dp"
             okulus:okulus_cornerRadius="5dp" />
 
-        <com.vinaysshenoy.okulus.OkulusImageView
+        <com.okulus.OkulusImageView
             android:id="@+id/image_6"
             android:layout_width="128dp"
             android:layout_height="96dp"

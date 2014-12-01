@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.vinaysshenoy.okulus;
+package com.okulus;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -35,6 +35,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.vinaysshenoy.okulus.R;
 
 /**
  * Custom ImageView to draw the content in the desired way.

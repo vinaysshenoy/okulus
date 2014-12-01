@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.vinaysshenoy.okulus.OkulusImageView;
+import com.okulus.OkulusImageView;
 import com.vinaysshenoy.okulusdemo.R;
 import com.vinaysshenoy.okulusdemo.utils.RawBitmapManager;
 
