@@ -74,6 +74,10 @@ class OkulusDrawable extends Drawable {
         mShadowRadius = shadowRadius;
         mShadowWidth = shadowWidth;
         mTouchSelectorColor = touchSelectorColor;
+
+        if(ImageView.ScaleType.FIT_CENTER == scaleType || ImageView.ScaleType.FIT_START == scaleType || ImageView.ScaleType.FIT_END == scaleType) {
+            throw new IllegalArgumentException(scaleType.toString() + " scale type is not supported!");
+        }
         mScaleType = scaleType;
 
         mBorderRect = new RectF();
@@ -159,8 +163,6 @@ class OkulusDrawable extends Drawable {
         final float heightScale = viewHeight / (float) mBitmapHeight;
 
         if (mScaleType == ImageView.ScaleType.CENTER) {
-            updateRectToScale(mImageRect, widthScale, heightScale);
-            updateRectToScale(mBorderRect, widthScale, heightScale);
             mShaderMatrix.postTranslate((viewWidth - mBitmapWidth) / 2F,
                     (viewHeight - mBitmapHeight) / 2F);
 
@@ -171,38 +173,43 @@ class OkulusDrawable extends Drawable {
                     (viewHeight - mBitmapHeight * scale) / 2F);
 
         } else if (mScaleType == ImageView.ScaleType.CENTER_INSIDE) {
-            updateRectToScale(mImageRect, widthScale, heightScale);
-            updateRectToScale(mBorderRect, widthScale, heightScale);
             float scale = Math.min(1.0f, Math.min(widthScale, heightScale));
             mShaderMatrix.postScale(scale, scale);
             mShaderMatrix.postTranslate((viewWidth - mBitmapWidth * scale) / 2F,
                     (viewHeight - mBitmapHeight * scale) / 2F);
 
         } else {
-            RectF mTempSrc = new RectF(0, 0, mBitmapWidth, mBitmapHeight);
-            RectF mTempDst = new RectF(0, 0, viewWidth, viewHeight);
+            final RectF tempSrc = new RectF(0, 0, mBitmapWidth, mBitmapHeight);
 
             switch (mScaleType) {
-                case FIT_CENTER:
-                    mShaderMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.CENTER);
+                /*case FIT_CENTER: {
+                    mShaderMatrix.setRectToRect(tempSrc, mRect, Matrix.ScaleToFit.CENTER);
                     break;
+                }*/
 
-                case FIT_START:
-                    mShaderMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.START);
+                /*case FIT_START: {
+                    mShaderMatrix.setRectToRect(tempSrc, mRect, Matrix.ScaleToFit.START);
                     break;
+                }
 
-                case FIT_END:
-                    mShaderMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.END);
+                case FIT_END: {
+                    mShaderMatrix.setRectToRect(tempSrc, mRect, Matrix.ScaleToFit.END);
                     break;
+                }*/
 
-                case FIT_XY:
-                    mShaderMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.FILL);
+                case FIT_XY: {
+                    mShaderMatrix.setRectToRect(tempSrc, mRect, Matrix.ScaleToFit.FILL);
                     break;
+                }
 
-                default:
+                default: {
                     break;
+                }
             }
         }
+
+        updateRectToScale(mImageRect, mScaleType, widthScale, heightScale);
+        updateRectToScale(mBorderRect, mScaleType, widthScale, heightScale);
 
         if (mBitmapShader != null) {
             mBitmapShader.setLocalMatrix(mShaderMatrix);
@@ -216,23 +223,70 @@ class OkulusDrawable extends Drawable {
      * @param widthScale  The scale factor of the width
      * @param heightScale The scale factor of the height
      */
-    private void updateRectToScale(final RectF rect, final float widthScale, final float heightScale) {
+    private void updateRectToScale(final RectF rect, final ImageView.ScaleType scaleType, final float widthScale, final float heightScale) {
 
-        if(widthScale > 1.0f) {
+        if (widthScale > 1.0f) {
 
-            final float rectWidth = Math.abs(rect.left - rect.right);
-            final float dx = (rectWidth - (rectWidth / widthScale)) / 2F;
-            rect.left += dx;
-            rect.right -= dx;
+            switch (scaleType) {
+
+                case CENTER:
+                case CENTER_CROP:
+                /*case FIT_CENTER:*/ {
+                    final float rectWidth = Math.abs(rect.left - rect.right);
+                    final float dx = (rectWidth - (rectWidth / widthScale)) / 2F;
+                    rect.left += dx;
+                    rect.right -= dx;
+                    break;
+                }
+
+                /*case FIT_END:
+                case FIT_START: {
+                    final float rectWidth = Math.abs(rect.left - rect.right);
+                    final float dx = (rectWidth - (rectWidth / widthScale));
+
+                    if(scaleType == ImageView.ScaleType.FIT_END) {
+                        rect.left += dx;
+                    } else {
+                        rect.right -= dx;
+                    }
+                    break;
+                }*/
+
+                default: {
+                }
+
+            }
 
         }
 
-        if(heightScale > 1.0f) {
+        if (heightScale > 1.0f) {
 
-            final float rectHeight = Math.abs(rect.top - rect.bottom);
-            final float dy = (rectHeight - (rectHeight / heightScale)) / 2F;
-            rect.top += dy;
-            rect.bottom -= dy;
+            switch (scaleType) {
+
+                case CENTER:
+                case CENTER_CROP:
+                case FIT_CENTER: {
+
+                    final float rectHeight = Math.abs(rect.top - rect.bottom);
+                    final float dy = (rectHeight - (rectHeight / heightScale)) / 2F;
+                    rect.top += dy;
+                    rect.bottom -= dy;
+                    break;
+                }
+
+                /*case FIT_END:
+                case FIT_START: {
+                    final float rectHeight = Math.abs(rect.top - rect.bottom);
+                    final float dy = (rectHeight - (rectHeight / heightScale));
+
+                    if(scaleType == ImageView.ScaleType.FIT_END) {
+                        rect.top += dy;
+                    } else {
+                        rect.bottom -= dy;
+                    }
+                    break;
+                }*/
+            }
 
         }
     }
