@@ -147,18 +147,20 @@ class OkulusDrawable extends Drawable {
      */
     private void updateShaderMatrix() {
 
-        final int viewWidth = (int) Math.abs(mImageRect.left - mImageRect.right);
-        final int viewHeight = (int) Math.abs(mImageRect.top - mImageRect.bottom);
+        final float viewWidth = Math.abs(mRect.left - mRect.right);
+        final float viewHeight = Math.abs(mRect.top - mRect.bottom);
 
         mShaderMatrix.reset();
 
-        if(mBitmapWidth == 0 && mBitmapHeight == 0) {
+        if (mBitmapWidth == 0 && mBitmapHeight == 0) {
             return;
         }
-        final float widthScale = viewWidth / mBitmapWidth;
-        final float heightScale = viewHeight / mBitmapHeight;
+        final float widthScale = viewWidth / (float) mBitmapWidth;
+        final float heightScale = viewHeight / (float) mBitmapHeight;
 
         if (mScaleType == ImageView.ScaleType.CENTER) {
+            updateRectToScale(mImageRect, widthScale, heightScale);
+            updateRectToScale(mBorderRect, widthScale, heightScale);
             mShaderMatrix.postTranslate((viewWidth - mBitmapWidth) / 2F,
                     (viewHeight - mBitmapHeight) / 2F);
 
@@ -169,6 +171,8 @@ class OkulusDrawable extends Drawable {
                     (viewHeight - mBitmapHeight * scale) / 2F);
 
         } else if (mScaleType == ImageView.ScaleType.CENTER_INSIDE) {
+            updateRectToScale(mImageRect, widthScale, heightScale);
+            updateRectToScale(mBorderRect, widthScale, heightScale);
             float scale = Math.min(1.0f, Math.min(widthScale, heightScale));
             mShaderMatrix.postScale(scale, scale);
             mShaderMatrix.postTranslate((viewWidth - mBitmapWidth * scale) / 2F,
@@ -180,8 +184,7 @@ class OkulusDrawable extends Drawable {
 
             switch (mScaleType) {
                 case FIT_CENTER:
-                    mShaderMatrix
-                            .setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.CENTER);
+                    mShaderMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.CENTER);
                     break;
 
                 case FIT_START:
@@ -205,6 +208,33 @@ class OkulusDrawable extends Drawable {
             mBitmapShader.setLocalMatrix(mShaderMatrix);
         }
 
+    }
+
+    /**
+     * Updates the Rects for scale
+     *
+     * @param widthScale  The scale factor of the width
+     * @param heightScale The scale factor of the height
+     */
+    private void updateRectToScale(final RectF rect, final float widthScale, final float heightScale) {
+
+        if(widthScale > 1.0f) {
+
+            final float rectWidth = Math.abs(rect.left - rect.right);
+            final float dx = (rectWidth - (rectWidth / widthScale)) / 2F;
+            rect.left += dx;
+            rect.right -= dx;
+
+        }
+
+        if(heightScale > 1.0f) {
+
+            final float rectHeight = Math.abs(rect.top - rect.bottom);
+            final float dy = (rectHeight - (rectHeight / heightScale)) / 2F;
+            rect.top += dy;
+            rect.bottom -= dy;
+
+        }
     }
 
     /**

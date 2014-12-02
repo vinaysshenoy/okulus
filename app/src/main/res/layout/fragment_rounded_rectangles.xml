@@ -28,7 +28,7 @@
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
-            android:scaleType="fitStart"
+            android:scaleType="center"
             okulus:okulus_cornerRadius="5dp"
             okulus:okulus_borderWidth="3dp"
             okulus:okulus_borderColor="#000000" />
@@ -37,7 +37,7 @@
             android:id="@+id/image_3"
             android:layout_width="128dp"
             android:layout_height="96dp"
-            android:scaleType="center"
+            android:scaleType="centerInside"
             android:layout_marginTop="12dp"
             okulus:okulus_cornerRadius="25dp" />
 
