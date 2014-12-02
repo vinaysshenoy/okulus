@@ -76,7 +76,7 @@ public class RawBitmapManager {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(context.getResources(), resourceId, options);
         options.inJustDecodeBounds = false;
-        options.inSampleSize = 3;
+        options.inSampleSize = 1;
         return BitmapFactory.decodeResource(context.getResources(), resourceId, options);
     }
 
