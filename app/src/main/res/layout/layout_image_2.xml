@@ -8,5 +8,6 @@
     android:layout_marginTop="12dp"
     okulus:okulus_cornerRadius="5dp"
     okulus:okulus_borderWidth="3dp"
+    android:scaleType="fitXY"
     okulus:okulus_borderColor="#000000" />
 

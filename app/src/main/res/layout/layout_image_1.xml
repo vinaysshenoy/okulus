@@ -5,6 +5,7 @@
     android:id="@+id/image"
     android:layout_width="128dp"
     android:layout_height="96dp"
+    android:scaleType="centerCrop"
     android:layout_marginTop="12dp"
     okulus:okulus_cornerRadius="5dp" />
 

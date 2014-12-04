@@ -10,5 +10,6 @@
     okulus:okulus_borderColor="#FFFFFF"
     okulus:okulus_shadowRadius="0.05"
     okulus:okulus_shadowWidth="1.5dp"
+    android:scaleType="centerCrop"
     okulus:okulus_cornerRadius="5dp" />
 

@@ -230,7 +230,7 @@ class OkulusDrawable extends Drawable {
             switch (scaleType) {
 
                 case CENTER:
-                case CENTER_CROP:
+                /*case CENTER_CROP:*/
                 /*case FIT_CENTER:*/ {
                     final float rectWidth = Math.abs(rect.left - rect.right);
                     final float dx = (rectWidth - (rectWidth / widthScale)) / 2F;
