@@ -24,12 +24,13 @@ import android.widget.ImageView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.vinaysshenoy.okulus.OkulusImageView;
 
 /**
  * Handles fetching an image from a URL as well as the life-cycle of the
  * associated request.
  */
-public class NetworkImageView extends ImageView {
+public class NetworkImageView extends OkulusImageView {
     /** The URL of the network image to load */
     private String mUrl;
 
