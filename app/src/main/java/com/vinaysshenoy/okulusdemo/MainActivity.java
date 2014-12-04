@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.vinaysshenoy.okulusdemo.fragments.NetworkFragment;
 import com.vinaysshenoy.okulusdemo.fragments.RoundedRectanglesFragment;
 
 
@@ -17,7 +18,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         if(savedInstanceState == null) {
-            loadRoundRectFragment();
+            loadNetworkFragment();
         }
     }
 
@@ -27,6 +28,15 @@ public class MainActivity extends ActionBarActivity {
                 .replace(R.id.frame_content,
                          Fragment.instantiate(this, RoundedRectanglesFragment.class.getName()),
                          "fragment_rounded_rectangles")
+                .commit();
+    }
+
+    private void loadNetworkFragment() {
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_content,
+                        Fragment.instantiate(this, NetworkFragment.class.getName()),
+                        "fragment_network")
                 .commit();
     }
 
