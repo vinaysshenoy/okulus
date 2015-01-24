@@ -30,7 +30,7 @@
             android:layout_width="128dp"
             android:layout_height="96dp"
             android:layout_marginTop="12dp"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             okulus:okulus_cornerRadius="5dp"
             okulus:okulus_borderWidth="3dp"
             okulus:okulus_borderColor="#000000" />
@@ -39,7 +39,7 @@
             android:id="@+id/image_3"
             android:layout_width="128dp"
             android:layout_height="96dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:layout_marginTop="12dp"
             okulus:okulus_cornerRadius="25dp"
             />
@@ -63,7 +63,7 @@
             okulus:okulus_shadowRadius="0.05"
             okulus:okulus_shadowWidth="1.5dp"
             okulus:okulus_cornerRadius="5dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerInside"/>
 
         <com.vinaysshenoy.okulus.OkulusImageView
             android:id="@+id/image_6"
@@ -76,7 +76,7 @@
             okulus:okulus_shadowRadius="0.05"
             okulus:okulus_shadowWidth="1.5dp"
             okulus:okulus_shadowColor="#00FF00"
-            android:scaleType="fitXY"
+            android:scaleType="center"
             />
     </LinearLayout>
 

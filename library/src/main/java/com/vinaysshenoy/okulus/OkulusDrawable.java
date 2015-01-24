@@ -76,7 +76,7 @@ class OkulusDrawable extends Drawable {
         mTouchSelectorColor = touchSelectorColor;
 
         if(ImageView.ScaleType.FIT_CENTER == scaleType || ImageView.ScaleType.FIT_START == scaleType || ImageView.ScaleType.FIT_END == scaleType) {
-            throw new IllegalArgumentException(scaleType.toString() + " scale type is not supported!");
+            throw new IllegalArgumentException("Only FIT_XY, CENTER, CENTER_INSIDE and CENTER_CROP scale types are supported");
         }
         mScaleType = scaleType;
 
@@ -230,12 +230,14 @@ class OkulusDrawable extends Drawable {
             switch (scaleType) {
 
                 case CENTER:
+                case CENTER_INSIDE:
                 /*case CENTER_CROP:*/
                 /*case FIT_CENTER:*/ {
                     final float rectWidth = Math.abs(rect.left - rect.right);
                     final float dx = (rectWidth - (rectWidth / widthScale)) / 2F;
                     rect.left += dx;
                     rect.right -= dx;
+
                     break;
                 }
 
@@ -264,8 +266,8 @@ class OkulusDrawable extends Drawable {
             switch (scaleType) {
 
                 case CENTER:
-                case CENTER_CROP:
-                case FIT_CENTER: {
+                case CENTER_INSIDE:
+                /*case FIT_CENTER:*/ {
 
                     final float rectHeight = Math.abs(rect.top - rect.bottom);
                     final float dy = (rectHeight - (rectHeight / heightScale)) / 2F;
