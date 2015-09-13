@@ -1,13 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '21.1.2'
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+
+    /* Required for volley sample */
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.vinaysshenoy.okulusdemo"
         minSdkVersion 9
-        targetSdkVersion 21
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -22,7 +25,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':library')
-    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.github.bumptech.glide:glide:3.4.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
