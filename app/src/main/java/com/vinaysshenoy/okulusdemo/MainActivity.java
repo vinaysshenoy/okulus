@@ -3,14 +3,16 @@ package com.vinaysshenoy.okulusdemo;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.vinaysshenoy.okulusdemo.fragments.ComparisonFragment;
 import com.vinaysshenoy.okulusdemo.fragments.NetworkFragment;
 import com.vinaysshenoy.okulusdemo.fragments.RoundedRectanglesFragment;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,16 +20,24 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         if(savedInstanceState == null) {
-            loadRoundRectFragment();
+            loadComparisonFragment();
         }
+    }
+
+    private void loadComparisonFragment() {
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_content, Fragment.instantiate(this, ComparisonFragment.class.getName()),
+                        "fragment_comparison")
+                .commit();
     }
 
     private void loadRoundRectFragment() {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_content,
-                         Fragment.instantiate(this, RoundedRectanglesFragment.class.getName()),
-                         "fragment_rounded_rectangles")
+                        Fragment.instantiate(this, RoundedRectanglesFragment.class.getName()),
+                        "fragment_rounded_rectangles")
                 .commit();
     }
 
@@ -41,22 +51,4 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

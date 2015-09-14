@@ -217,6 +217,7 @@ public class OkulusImageView extends ImageView {
         }
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
 
@@ -226,7 +227,7 @@ public class OkulusImageView extends ImageView {
         requiredWidth = ViewCompat.resolveSizeAndState(
                 requiredWidth,
                 widthMeasureSpec,
-                1
+                0
         );
         requiredHeight = ViewCompat.resolveSizeAndState(
                 requiredHeight,
@@ -240,14 +241,14 @@ public class OkulusImageView extends ImageView {
         if (mFullCircle) {
 
             if (requiredHeight > requiredWidth) {
-                requiredHeight = requiredWidth;
+                setMeasuredDimension(requiredWidth, requiredWidth);
             } else {
-                requiredWidth = requiredHeight;
+                setMeasuredDimension(requiredHeight, requiredHeight);
             }
 
+        } else {
+            setMeasuredDimension(requiredWidth, requiredHeight);
         }
-
-        setMeasuredDimension(requiredWidth, requiredHeight);
 
     }
 

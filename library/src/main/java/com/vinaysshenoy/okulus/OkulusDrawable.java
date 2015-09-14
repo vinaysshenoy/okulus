@@ -35,6 +35,8 @@ import android.widget.ImageView;
  */
 class OkulusDrawable extends Drawable {
 
+    private static final String TAG = "OkulusDrawable";
+
     private final RectF mRect = new RectF();
 
     /**
@@ -75,10 +77,11 @@ class OkulusDrawable extends Drawable {
         mShadowWidth = shadowWidth;
         mTouchSelectorColor = touchSelectorColor;
 
-        if(ImageView.ScaleType.FIT_CENTER == scaleType || ImageView.ScaleType.FIT_START == scaleType || ImageView.ScaleType.FIT_END == scaleType) {
-            throw new IllegalArgumentException("Only FIT_XY, CENTER, CENTER_INSIDE and CENTER_CROP scale types are supported");
+        if(ImageView.ScaleType.FIT_XY != scaleType && ImageView.ScaleType.CENTER_CROP != scaleType) {
+            android.util.Log.w(TAG, "Only FIT_XY and CENTER_CROP scale types are supported");
+        } else {
+            mScaleType = scaleType;
         }
-        mScaleType = scaleType;
 
         mBorderRect = new RectF();
         mImageRect = new RectF();
@@ -162,135 +165,27 @@ class OkulusDrawable extends Drawable {
         final float widthScale = viewWidth / (float) mBitmapWidth;
         final float heightScale = viewHeight / (float) mBitmapHeight;
 
-        if (mScaleType == ImageView.ScaleType.CENTER) {
-            mShaderMatrix.postTranslate((viewWidth - mBitmapWidth) / 2F,
-                    (viewHeight - mBitmapHeight) / 2F);
-
-        } else if (mScaleType == ImageView.ScaleType.CENTER_CROP) {
+        if (mScaleType == ImageView.ScaleType.CENTER_CROP) {
             float scale = Math.max(widthScale, heightScale);
             mShaderMatrix.postScale(scale, scale);
             mShaderMatrix.postTranslate((viewWidth - mBitmapWidth * scale) / 2F,
                     (viewHeight - mBitmapHeight * scale) / 2F);
 
-        } else if (mScaleType == ImageView.ScaleType.CENTER_INSIDE) {
+        } else if (mScaleType == ImageView.ScaleType.FIT_XY) {
+
+            final RectF tempSrc = new RectF(0, 0, mBitmapWidth, mBitmapHeight);
+            mShaderMatrix.setRectToRect(tempSrc, mRect, Matrix.ScaleToFit.FILL);
             float scale = Math.min(1.0f, Math.min(widthScale, heightScale));
             mShaderMatrix.postScale(scale, scale);
             mShaderMatrix.postTranslate((viewWidth - mBitmapWidth * scale) / 2F,
                     (viewHeight - mBitmapHeight * scale) / 2F);
 
-        } else {
-            final RectF tempSrc = new RectF(0, 0, mBitmapWidth, mBitmapHeight);
-
-            switch (mScaleType) {
-                /*case FIT_CENTER: {
-                    mShaderMatrix.setRectToRect(tempSrc, mRect, Matrix.ScaleToFit.CENTER);
-                    break;
-                }*/
-
-                /*case FIT_START: {
-                    mShaderMatrix.setRectToRect(tempSrc, mRect, Matrix.ScaleToFit.START);
-                    break;
-                }
-
-                case FIT_END: {
-                    mShaderMatrix.setRectToRect(tempSrc, mRect, Matrix.ScaleToFit.END);
-                    break;
-                }*/
-
-                case FIT_XY: {
-                    mShaderMatrix.setRectToRect(tempSrc, mRect, Matrix.ScaleToFit.FILL);
-                    break;
-                }
-
-                default: {
-                    break;
-                }
-            }
         }
-
-        updateRectToScale(mImageRect, mScaleType, widthScale, heightScale);
-        updateRectToScale(mBorderRect, mScaleType, widthScale, heightScale);
 
         if (mBitmapShader != null) {
             mBitmapShader.setLocalMatrix(mShaderMatrix);
         }
 
-    }
-
-    /**
-     * Updates the Rects for scale
-     *
-     * @param widthScale  The scale factor of the width
-     * @param heightScale The scale factor of the height
-     */
-    private void updateRectToScale(final RectF rect, final ImageView.ScaleType scaleType, final float widthScale, final float heightScale) {
-
-        if (widthScale > 1.0f) {
-
-            switch (scaleType) {
-
-                case CENTER:
-                case CENTER_INSIDE:
-                /*case CENTER_CROP:*/
-                /*case FIT_CENTER:*/ {
-                    final float rectWidth = Math.abs(rect.left - rect.right);
-                    final float dx = (rectWidth - (rectWidth / widthScale)) / 2F;
-                    rect.left += dx;
-                    rect.right -= dx;
-
-                    break;
-                }
-
-                /*case FIT_END:
-                case FIT_START: {
-                    final float rectWidth = Math.abs(rect.left - rect.right);
-                    final float dx = (rectWidth - (rectWidth / widthScale));
-
-                    if(scaleType == ImageView.ScaleType.FIT_END) {
-                        rect.left += dx;
-                    } else {
-                        rect.right -= dx;
-                    }
-                    break;
-                }*/
-
-                default: {
-                }
-
-            }
-
-        }
-
-        if (heightScale > 1.0f) {
-
-            switch (scaleType) {
-
-                case CENTER:
-                case CENTER_INSIDE:
-                /*case FIT_CENTER:*/ {
-
-                    final float rectHeight = Math.abs(rect.top - rect.bottom);
-                    final float dy = (rectHeight - (rectHeight / heightScale)) / 2F;
-                    rect.top += dy;
-                    rect.bottom -= dy;
-                    break;
-                }
-
-                /*case FIT_END:
-                case FIT_START: {
-                    final float rectHeight = Math.abs(rect.top - rect.bottom);
-                    final float dy = (rectHeight - (rectHeight / heightScale));
-
-                    if(scaleType == ImageView.ScaleType.FIT_END) {
-                        rect.top += dy;
-                    } else {
-                        rect.bottom -= dy;
-                    }
-                    break;
-                }*/
-            }
-
-        }
     }
 
     /**
@@ -331,19 +226,18 @@ class OkulusDrawable extends Drawable {
         }
 
         mImageRect.set(mBorderRect);
-        mImageRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
     }
 
     @Override
     public void draw(Canvas canvas) {
 
         mPaint.setShader(null);
-        drawBordersAndShadow(canvas);
         if (mBitmapShader != null) {
             drawImage(canvas);
         } else {
             //TODO: Draw some custom background color here
         }
+        drawBordersAndShadow(canvas);
         if (mTouchSelectorColor != Color.TRANSPARENT) {
             drawTouchSelector(canvas);
         }
@@ -379,7 +273,11 @@ class OkulusDrawable extends Drawable {
 
         mPaint.setShader(mBitmapShader);
         mPaint.setStyle(Paint.Style.FILL);
-        canvas.drawRoundRect(mImageRect, mCornerRadius, mCornerRadius, mPaint);
+        if(mFullCircle) {
+            canvas.drawCircle(mImageRect.centerX(), mImageRect.centerY(), mImageRect.width() / 2F, mPaint);
+        } else {
+            canvas.drawRoundRect(mImageRect, mCornerRadius, mCornerRadius, mPaint);
+        }
     }
 
     /**
