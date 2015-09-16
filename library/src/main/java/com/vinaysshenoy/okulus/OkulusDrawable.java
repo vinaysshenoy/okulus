@@ -231,7 +231,9 @@ class OkulusDrawable extends Drawable {
     @Override
     public void draw(Canvas canvas) {
 
-        mPaint.setShader(null);
+        if(mShadowWidth > 0) {
+            drawShadows(canvas);
+        }
         if (mBitmapShader != null) {
             drawImage(canvas);
         } else {
@@ -242,6 +244,20 @@ class OkulusDrawable extends Drawable {
             drawTouchSelector(canvas);
         }
 
+    }
+
+    /**
+     * Draws drop shadows
+     * */
+    private void drawShadows(Canvas canvas) {
+
+        mPaint.setShader(null);
+        mPaint.setStrokeWidth(0F);
+        mPaint.setColor(Color.WHITE);
+        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mPaint.setShadowLayer(mShadowRadius, mShadowWidth, mShadowWidth, mShadowColor);
+        canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mPaint);
+        mPaint.setShadowLayer(0f, 0f, 0f, mShadowColor);
     }
 
     /**
@@ -292,12 +308,7 @@ class OkulusDrawable extends Drawable {
             mPaint.setColor(mBorderColor);
             mPaint.setStrokeWidth(mBorderWidth);
             mPaint.setStyle(Paint.Style.STROKE);
-
-            if (mShadowWidth > 0) {
-                mPaint.setShadowLayer(mShadowRadius, mShadowWidth, mShadowWidth, mShadowColor);
-            }
             canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mPaint);
-            mPaint.setShadowLayer(0f, 0f, 0f, mShadowColor);
         }
 
     }

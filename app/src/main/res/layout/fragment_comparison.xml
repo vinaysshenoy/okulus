@@ -20,9 +20,8 @@
         okulus:okulus_borderColor="#FF0000"
         okulus:okulus_borderWidth="2dp"
         okulus:okulus_fullCircle="true"
-        okulus:okulus_shadowColor="#00FF00"
-        okulus:okulus_shadowRadius="0.05"
-        okulus:okulus_shadowWidth="1.5dp"
+        okulus:okulus_shadowRadius="0.25"
+        okulus:okulus_shadowWidth="2dp"
         />
 
     <ImageView
