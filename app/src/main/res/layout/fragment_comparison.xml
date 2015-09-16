@@ -20,7 +20,6 @@
         okulus:okulus_borderColor="#FF0000"
         okulus:okulus_borderWidth="2dp"
         okulus:okulus_fullCircle="true"
-        okulus:okulus_shadowRadius="0.25"
         okulus:okulus_shadowWidth="2dp"
         />
 

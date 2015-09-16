@@ -198,7 +198,7 @@ public class OkulusImageView extends ImageView {
         if (mFullCircle) {
 
             if (requiredHeight > requiredWidth) {
-                setMeasuredDimension(requiredWidth, requiredWidth );
+                setMeasuredDimension(requiredWidth, requiredWidth);
             } else {
                 setMeasuredDimension(requiredHeight, requiredHeight);
             }
