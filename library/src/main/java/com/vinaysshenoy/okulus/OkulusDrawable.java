@@ -180,7 +180,8 @@ class OkulusDrawable extends Drawable {
         mBorderRect.left += Math.min(mBorderSize, mShadowSize) * 0.5F;
         mBorderRect.right -= Math.min(mBorderSize, mShadowSize) * 0.5F;
         mBorderRect.top += Math.min(mBorderSize, mShadowSize) * 0.5F;
-        mBorderRect.bottom -= (mShadowSize + mBorderSize * 0.5F) * 1.25F;
+        mBorderRect.bottom -= (mShadowSize + mBorderSize * 0.5F);
+//                * 1.25F;
         mImageRect.set(mBorderRect);
     }
 
