@@ -151,6 +151,16 @@ public class OkulusImageView extends ImageView {
         mShadowSize = dpToPx(shadowWidthInDips);
         setImageDrawable(null);
 
+        if (mShadowSize > 0f) {
+
+            if (Build.VERSION.SDK_INT >= 14) {
+                /* We need to set layer type for shadows to work
+                 * on ICS and above
+                 */
+                setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            }
+        }
+
     }
 
     @Override

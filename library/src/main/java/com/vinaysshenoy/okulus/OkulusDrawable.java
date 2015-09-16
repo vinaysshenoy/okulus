@@ -18,6 +18,7 @@ package com.vinaysshenoy.okulus;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -56,7 +57,7 @@ class OkulusDrawable extends Drawable {
 
     private BitmapShader mBitmapShader;
     private final Paint mPaint;
-    private float mBorderWidth;
+    private float mBorderSize;
     private int mBorderColor;
     private boolean mFullCircle;
     private float mCornerRadius;
@@ -69,11 +70,13 @@ class OkulusDrawable extends Drawable {
     private Matrix mShaderMatrix;
     private ImageView.ScaleType mScaleType;
 
+    private BlurMaskFilter mShadowMaskFilter;
+
 
     public OkulusDrawable(Bitmap bitmap, float cornerRadius, boolean fullCircle, float borderWidth, int borderColor, float shadowSize, int shadowColor, int touchSelectorColor, ImageView.ScaleType scaleType) {
 
         mCornerRadius = cornerRadius;
-        mBorderWidth = borderWidth;
+        mBorderSize = borderWidth;
         mBorderColor = borderColor;
         mFullCircle = fullCircle;
         mShadowColor = shadowColor;
@@ -91,8 +94,7 @@ class OkulusDrawable extends Drawable {
         mShadowRect = new RectF();
         mShaderMatrix = new Matrix();
 
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
 
         updateBitmap(bitmap);
 
@@ -141,17 +143,45 @@ class OkulusDrawable extends Drawable {
         super.onBoundsChange(bounds);
         mRect.set(bounds);
         mShadowRect.set(mRect);
+        mShadowRect.inset(mShadowSize, mShadowSize);
 
         if (mFullCircle) {
             mCornerRadius = Math.abs(mRect.left - mRect.right) / 2;
         }
 
-        if (mBorderWidth > 0) {
+        if (mBorderSize > 0) {
             initRectsWithBorders();
         } else {
             initRectsWithoutBorders();
         }
+        if(mShadowSize > 0) {
+            mShadowMaskFilter = new BlurMaskFilter(mShadowSize * 0.95F, BlurMaskFilter.Blur.SOLID);
+        }
         updateShaderMatrix();
+    }
+
+    /**
+     * Initializes the rects without borders, taking shadows into account
+     */
+    private void initRectsWithoutBorders() {
+
+        mImageRect.set(mRect);
+        mImageRect.bottom -= (mShadowSize * 0.5F);
+
+    }
+
+    /**
+     * Initialize the rects with borders, taking shadows into account
+     */
+    private void initRectsWithBorders() {
+
+        mBorderRect.set(mRect);
+        mBorderRect.inset(mBorderSize, mBorderSize);
+        mBorderRect.left += Math.min(mBorderSize, mShadowSize) * 0.5F;
+        mBorderRect.right -= Math.min(mBorderSize, mShadowSize) * 0.5F;
+        mBorderRect.top += Math.min(mBorderSize, mShadowSize) * 0.5F;
+        mBorderRect.bottom -= (mShadowSize + mBorderSize * 0.5F) * 1.25F;
+        mImageRect.set(mBorderRect);
     }
 
     /**
@@ -193,41 +223,19 @@ class OkulusDrawable extends Drawable {
 
     }
 
-    /**
-     * Initializes the rects without borders, taking shadows into account
-     */
-    private void initRectsWithoutBorders() {
-
-        mImageRect.set(mRect);
-        mImageRect.right -= (mShadowSize * 0.3F);
-        mImageRect.bottom -= (mShadowSize * 0.3F);
-    }
-
-    /**
-     * Initialize the rects with borders, taking shadows into account
-     */
-    private void initRectsWithBorders() {
-
-        mBorderRect.set(mShadowRect);
-        mBorderRect.right -= (mShadowSize * 0.3F);
-        mBorderRect.bottom -= (mShadowSize * 0.3F);
-        mImageRect.set(mBorderRect);
-    }
-
     @Override
     public void draw(Canvas canvas) {
 
-        if (mShadowSize > 0) {
-            drawShadows(canvas);
-        }
         if (mBitmapShader != null) {
+
+            if (mShadowSize > 0) {
+                drawShadows(canvas);
+            }
             drawImage(canvas);
-        } else {
-            //TODO: Draw some custom background color here
-        }
-        drawBordersAndShadow(canvas);
-        if (mTouchSelectorColor != Color.TRANSPARENT) {
-            drawTouchSelector(canvas);
+            drawBorders(canvas);
+            if (mTouchSelectorColor != Color.TRANSPARENT) {
+                drawTouchSelector(canvas);
+            }
         }
 
     }
@@ -241,7 +249,13 @@ class OkulusDrawable extends Drawable {
         mPaint.setStrokeWidth(mShadowSize);
         mPaint.setColor(mShadowColor);
         mPaint.setStyle(Paint.Style.STROKE);
-        canvas.drawRoundRect(mShadowRect, mCornerRadius, mCornerRadius, mPaint);
+        mPaint.setMaskFilter(mShadowMaskFilter);
+        if (mFullCircle) {
+            canvas.drawCircle(mShadowRect.centerX(), mShadowRect.centerY(), mShadowRect.width() / 2.0F, mPaint);
+        } else {
+            canvas.drawRoundRect(mShadowRect, mCornerRadius, mCornerRadius, mPaint);
+        }
+        mPaint.setMaskFilter(null);
     }
 
     /**
@@ -256,7 +270,7 @@ class OkulusDrawable extends Drawable {
         mPaint.setColor(mTouchSelectorColor);
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        if (mBorderWidth > 0) {
+        if (mBorderSize > 0) {
             canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mPaint);
         } else {
             canvas.drawRoundRect(mImageRect, mCornerRadius, mCornerRadius, mPaint);
@@ -271,6 +285,7 @@ class OkulusDrawable extends Drawable {
      */
     private void drawImage(final Canvas canvas) {
 
+        mPaint.setColor(Color.WHITE);
         mPaint.setShader(mBitmapShader);
         mPaint.setStyle(Paint.Style.FILL);
         if (mFullCircle) {
@@ -285,14 +300,19 @@ class OkulusDrawable extends Drawable {
      *
      * @param canvas The canvas to draw the borders on
      */
-    private void drawBordersAndShadow(final Canvas canvas) {
+    private void drawBorders(final Canvas canvas) {
 
-        if (mBorderWidth > 0) {
+        if (mBorderSize > 0) {
             mPaint.setShader(null);
             mPaint.setColor(mBorderColor);
-            mPaint.setStrokeWidth(mBorderWidth);
+            mPaint.setStrokeWidth(mBorderSize);
             mPaint.setStyle(Paint.Style.STROKE);
-            canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mPaint);
+
+            if (mFullCircle) {
+                canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRect.width() / 2.0F, mPaint);
+            } else {
+                canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mPaint);
+            }
         }
 
     }
