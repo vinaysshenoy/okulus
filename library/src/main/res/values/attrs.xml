@@ -8,7 +8,6 @@
         <attr name="okulus_fullCircle" format="boolean"/>
         <attr name="okulus_shadowWidth" format="dimension"/>
         <attr name="okulus_shadowColor" format="color"/>
-        <attr name="okulus_shadowRadius" format="float"/>
         <attr name="okulus_touchSelectorColor" format="color"/>
         <attr name="okulus_touchSelectorEnabled" format="boolean"/>
     </declare-styleable>

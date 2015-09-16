@@ -55,9 +55,8 @@ class OkulusDrawable extends Drawable {
     private int mBorderColor;
     private boolean mFullCircle;
     private float mCornerRadius;
-    private float mShadowWidth;
+    private float mShadowSize;
     private int mShadowColor;
-    private float mShadowRadius;
     private int mBitmapWidth;
     private int mBitmapHeight;
     private int mTouchSelectorColor;
@@ -66,15 +65,14 @@ class OkulusDrawable extends Drawable {
     private ImageView.ScaleType mScaleType;
 
 
-    public OkulusDrawable(Bitmap bitmap, float cornerRadius, boolean fullCircle, float borderWidth, int borderColor, float shadowWidth, int shadowColor, float shadowRadius, int touchSelectorColor, ImageView.ScaleType scaleType) {
+    public OkulusDrawable(Bitmap bitmap, float cornerRadius, boolean fullCircle, float borderWidth, int borderColor, float shadowSize, int shadowColor, int touchSelectorColor, ImageView.ScaleType scaleType) {
 
         mCornerRadius = cornerRadius;
         mBorderWidth = borderWidth;
         mBorderColor = borderColor;
         mFullCircle = fullCircle;
         mShadowColor = shadowColor;
-        mShadowRadius = shadowRadius;
-        mShadowWidth = shadowWidth;
+        mShadowSize = shadowSize;
         mTouchSelectorColor = touchSelectorColor;
 
         if(ImageView.ScaleType.FIT_XY != scaleType && ImageView.ScaleType.CENTER_CROP != scaleType) {
@@ -194,13 +192,13 @@ class OkulusDrawable extends Drawable {
     private void initRectsWithoutBorders() {
 
         mImageRect.set(mRect);
-        if (mShadowWidth > 0) {
+        if (mShadowSize > 0) {
 
             /* Shadows will be drawn to the right & bottom,
              * so adjust the image rect on the right & bottom
              */
-            mImageRect.right -= mShadowWidth;
-            mImageRect.bottom -= mShadowWidth;
+            mImageRect.right -= mShadowSize;
+            mImageRect.bottom -= mShadowSize;
         }
     }
 
@@ -212,7 +210,7 @@ class OkulusDrawable extends Drawable {
         mBorderRect.set(mRect);
         mBorderRect.inset(mBorderWidth / 1.3f, mBorderWidth / 1.3f);
 
-        if (mShadowWidth > 0) {
+        if (mShadowSize > 0) {
 
 
             /* Shadows will be drawn to the right & bottom,
@@ -221,8 +219,8 @@ class OkulusDrawable extends Drawable {
              * Since the image rect is calculated from the
              * border rect, the dimens will be accounted for.
              */
-            mBorderRect.right -= mShadowWidth;
-            mBorderRect.bottom -= mShadowWidth;
+            mBorderRect.right -= mShadowSize;
+            mBorderRect.bottom -= mShadowSize;
         }
 
         mImageRect.set(mBorderRect);
@@ -231,7 +229,7 @@ class OkulusDrawable extends Drawable {
     @Override
     public void draw(Canvas canvas) {
 
-        if(mShadowWidth > 0) {
+        if(mShadowSize > 0) {
             drawShadows(canvas);
         }
         if (mBitmapShader != null) {
@@ -255,9 +253,9 @@ class OkulusDrawable extends Drawable {
         mPaint.setStrokeWidth(0F);
         mPaint.setColor(Color.WHITE);
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mPaint.setShadowLayer(mShadowRadius, mShadowWidth, mShadowWidth, mShadowColor);
+        //mPaint.setShadowLayer(mShadowSize, mShadowWidth, mShadowWidth, mShadowColor);
         canvas.drawRoundRect(mBorderRect, mCornerRadius, mCornerRadius, mPaint);
-        mPaint.setShadowLayer(0f, 0f, 0f, mShadowColor);
+//        mPaint.setShadowLayer(0f, 0f, 0f, mShadowColor);
     }
 
     /**

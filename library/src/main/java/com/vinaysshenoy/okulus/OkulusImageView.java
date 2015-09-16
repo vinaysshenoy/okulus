@@ -53,14 +53,12 @@ public class OkulusImageView extends ImageView {
     private static final int DEFAULT_SHADOW_COLOR = 0xB3444444; //70% dark gray
     private static final int DEFAULT_TOUCH_SELECTOR_COLOR = 0x66444444; //40% dark gray
     private static final boolean DEFAULT_FULL_CIRCLE = false;
-    private static final float DEFAULT_SHADOW_RADIUS = 0.5f;
     private static final boolean DEFAULT_TOUCH_SELECTOR_ENABLED = false;
 
     private float mCornerRadius;
     private float mBorderWidth;
     private int mBorderColor;
-    private float mShadowWidth;
-    private float mShadowRadius;
+    private float mShadowSize;
     private int mShadowColor;
     private int mTouchSelectorColor;
     private boolean mTouchSelectorEnabled;
@@ -119,7 +117,6 @@ public class OkulusImageView extends ImageView {
         mFullCircle = DEFAULT_FULL_CIRCLE;
         float shadowWidthInDips = DEFAULT_SHADOW_WIDTH;
         mShadowColor = DEFAULT_SHADOW_COLOR;
-        mShadowRadius = DEFAULT_SHADOW_RADIUS;
         mTouchSelectorColor = DEFAULT_TOUCH_SELECTOR_COLOR;
         mTouchSelectorEnabled = DEFAULT_TOUCH_SELECTOR_ENABLED;
 
@@ -135,8 +132,6 @@ public class OkulusImageView extends ImageView {
                     .getBoolean(R.styleable.OkulusImageView_okulus_fullCircle, mFullCircle);
             mShadowColor = styledAttrs
                     .getColor(R.styleable.OkulusImageView_okulus_shadowColor, mShadowColor);
-            mShadowRadius = styledAttrs
-                    .getFloat(R.styleable.OkulusImageView_okulus_shadowRadius, mShadowRadius);
             mTouchSelectorColor = styledAttrs
                     .getColor(R.styleable.OkulusImageView_okulus_touchSelectorColor, mTouchSelectorColor);
             mTouchSelectorEnabled = styledAttrs
@@ -152,11 +147,10 @@ public class OkulusImageView extends ImageView {
             styledAttrs.recycle();
         }
 
-        clampBorderAndShadowWidths(borderWidthInDips, shadowWidthInDips);
         mBorderWidth = dpToPx(borderWidthInDips);
-        mShadowWidth = dpToPx(shadowWidthInDips);
+        mShadowSize = dpToPx(shadowWidthInDips);
 
-        if (mShadowWidth > 0f) {
+        if (mShadowSize > 0f) {
 
             if (Build.VERSION.SDK_INT >= 14) {
                 /* We need to set layer type for shadows to work
@@ -190,33 +184,6 @@ public class OkulusImageView extends ImageView {
     }
 
 
-    /**
-     * Clamps the widths of the border & shadow(if set) to a sane max. This modifies the passed in
-     * paramters if needed
-     * <p/>
-     * Currently, border is allowed to be [1,5] dp and shadow is allowed to be [1,3] dp
-     * <p/>
-     * If they exceed their maximums, they are set to the max value. If they go below the minimums,
-     * they are set to 0
-     *
-     * @param borderWidthInDips The set border width in dips
-     * @param shadowWidthInDips The set shadow width in dips
-     */
-    private void clampBorderAndShadowWidths(float borderWidthInDips, float shadowWidthInDips) {
-
-        if (borderWidthInDips > 5f) {
-            borderWidthInDips = 5f;
-        } else if (borderWidthInDips < 0f) {
-            borderWidthInDips = 0f;
-        }
-
-        if (shadowWidthInDips > 3f) {
-            shadowWidthInDips = 3f;
-        } else if (shadowWidthInDips < 0f) {
-            shadowWidthInDips = 0f;
-        }
-    }
-
     @SuppressWarnings("SuspiciousNameCombination")
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
@@ -241,7 +208,7 @@ public class OkulusImageView extends ImageView {
         if (mFullCircle) {
 
             if (requiredHeight > requiredWidth) {
-                setMeasuredDimension(requiredWidth, requiredWidth);
+                setMeasuredDimension(requiredWidth, requiredWidth );
             } else {
                 setMeasuredDimension(requiredHeight, requiredHeight);
             }
@@ -308,9 +275,8 @@ public class OkulusImageView extends ImageView {
                 mFullCircle,
                 mBorderWidth,
                 mBorderColor,
-                mShadowWidth,
+                mShadowSize,
                 mShadowColor,
-                mShadowRadius,
                 Color.TRANSPARENT,
                 getScaleType());
     }
