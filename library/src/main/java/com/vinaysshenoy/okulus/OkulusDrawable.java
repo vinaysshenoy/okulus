@@ -166,7 +166,7 @@ class OkulusDrawable extends Drawable {
     private void initRectsWithoutBorders() {
 
         mImageRect.set(mRect);
-        mImageRect.bottom -= (mShadowSize * 0.5F);
+        mImageRect.bottom -= (mShadowSize * 1.5F);
 
     }
 
